@@ -10,6 +10,7 @@ const HomeScreen = () => {
       <Text style={styles.title}>Welcome to VintageVinyls jee Riku lisäsi ja Kaarina</Text>
       <Text style={styles.title}>Welcome to VintageVinyls jee Riku lisäsi ja Kaarina</Text>
       <Text style={styles.subtitle}>Home Screen JEEEEEEE JEPJEP</Text>
+      <Text style={styles.subtitle}>Uusinkohta</Text>
       <Button
         title="contact info"
         onPress={() => navigation.navigate('Contact')}
