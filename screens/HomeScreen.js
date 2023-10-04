@@ -8,7 +8,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to VintageVinyls jee</Text>
-      <Text style={styles.subtitle}>Home Screen</Text>
+      <Text style={styles.subtitle}>Home Screen jepjep</Text>
       <Button
         title="contact info"
         onPress={() => navigation.navigate('Contact')}
