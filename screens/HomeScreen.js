@@ -8,6 +8,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to VintageVinyls jee Riku lisäsi ja Kaarina</Text>
+      <Text style={styles.title}>Welcome to VintageVinyls jee Riku lisäsi ja Kaarina</Text>
       <Text style={styles.subtitle}>Home Screen JEEEEEEE JEPJEP</Text>
       <Button
         title="contact info"
