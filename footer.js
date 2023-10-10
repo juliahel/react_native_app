@@ -26,6 +26,12 @@ const Footer = () => {
 
       <TouchableOpacity
         style={styles.footerLink}
+        onPress={() => navigation.navigate('Genres')}>
+        <Text style={styles.footerText}>Genres</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.footerLink}
         onPress={() => navigation.navigate('Contact')}>
         <Text style={styles.footerText}>Contact</Text>
       </TouchableOpacity>

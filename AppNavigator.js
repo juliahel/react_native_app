@@ -4,10 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './screens/HomeScreen';
 import ArtistScreen from './screens/ArtistScreen';
+import AlbumScreen from './screens/AlbumScreen';
+import GenreScreen from './screens/GenreScreen';
 import ContactScreen from './screens/ContactScreen';
 import Footer from './footer';
 import Header from './header';
-import AlbumScreen from './screens/AlbumScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,7 @@ const AppNavigator = () => {
         }}/>
         <Stack.Screen name="Artists" component={ArtistScreen}/>
         <Stack.Screen name="Albums" component={AlbumScreen} />
+        <Stack.Screen name="Genres" component={GenreScreen} />
         <Stack.Screen name="Contact" component={ContactScreen} />
       </Stack.Navigator>
       <Footer />
