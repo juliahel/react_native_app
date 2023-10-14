@@ -8,8 +8,8 @@ const Footer = () => {
     <View style={styles.footerContainer}>
       <TouchableOpacity
         style={styles.footerLink}
-        onPress={() => navigation.navigate('Home')}>
-        <Text style={styles.footerText}>Home</Text>
+        onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.footerText}>Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
