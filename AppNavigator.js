@@ -62,7 +62,7 @@ const AppNavigator = () => {
       <Header />
       <Stack.Navigator initialRouteName="Home"
         screenOptions={{
-          cardStyle: { backgroundColor: '#F5EFE7' }, headerShown: false       
+          cardStyle: { backgroundColor: '#F5EFE7' }       
         }}>
         {user ? (
           <Stack.Screen name="AdminHome" component={AdminHomeScreen} />
@@ -77,12 +77,12 @@ const AppNavigator = () => {
               height: 50},
             headerTitleAlign: 'center',
             }}/>
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-          <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
-          <Stack.Screen name="Login" component={SignInScreen} />
+          <Stack.Screen name="SignIn" options={{headerShown: false}} component={SignInScreen} />
+          <Stack.Screen name="SignUp" options={{headerShown: false}} component={SignUpScreen} />
+          <Stack.Screen name="ConfirmEmail" options={{headerShown: false}} component={ConfirmEmailScreen} />
+          <Stack.Screen name="ForgotPassword" options={{headerShown: false}} component={ForgotPasswordScreen} />
+          <Stack.Screen name="NewPassword" options={{headerShown: false}} component={NewPasswordScreen} />
+          <Stack.Screen name="Login" options={{headerShown: false}} component={SignInScreen} />
         <Stack.Screen name="Artists" component={ArtistScreen}/>
         <Stack.Screen name="Albums" component={AlbumScreen} />
         <Stack.Screen name="Genres" component={GenreScreen} />
