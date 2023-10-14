@@ -65,7 +65,7 @@ const AppNavigator = () => {
           cardStyle: { backgroundColor: '#F5EFE7' }       
         }}>
         {user ? (
-          <Stack.Screen name="AdminHome" component={AdminHomeScreen} />
+          <Stack.Screen name="AdminHome" options={{headerShown: false}} component={AdminHomeScreen} />
         ) : (
           <>
           <Stack.Screen name="Home" component={HomeScreen}
