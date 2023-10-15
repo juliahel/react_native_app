@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './screens/HomeScreen';
 import ArtistScreen from './screens/ArtistScreen';
+import OneArtist from './screens/OneArtist';
 import AlbumScreen from './screens/AlbumScreen';
 import GenreScreen from './screens/GenreScreen';
 import ContactScreen from './screens/ContactScreen';
@@ -84,6 +85,7 @@ const AppNavigator = () => {
           <Stack.Screen name="NewPassword" options={{headerShown: false}} component={NewPasswordScreen} />
           <Stack.Screen name="Login" options={{headerShown: false}} component={SignInScreen} />
         <Stack.Screen name="Artists" component={ArtistScreen}/>
+        <Stack.Screen name="OneArtist" component={OneArtist} />
         <Stack.Screen name="Albums" component={AlbumScreen} />
         <Stack.Screen name="Genres" component={GenreScreen} />
         <Stack.Screen name="Contact" component={ContactScreen} />
