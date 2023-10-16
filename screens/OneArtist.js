@@ -6,8 +6,8 @@ const OneArtist = ({ route }) => {
   const [artistData, setArtistData] = useState(null);
   const [albums, setAlbums] = useState([]);
 
-  //tää on kesken
-  const [numColumns, setNumColumns] = useState(2);
+  //tää on kesken - siirto ehkä etusivulle
+  //const [numColumns, setNumColumns] = useState(2);
 
   useEffect(() => {
     const artistApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readartist/${artistId}`;
@@ -35,11 +35,12 @@ const OneArtist = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Artist info</Text>
       {artistData ? (
         <>
-          <Text>Artist ID: {artistData.id}</Text>
-          <Text>Artist name: {artistData.name}</Text>
+          <Text style={styles.artistTitle}>{artistData.name}</Text>
+          <Text style={styles.title}>*Artist image*</Text>
+          <Text>Albums by {artistData.name}:</Text>
+          <Text> </Text>
         </>
       ) : (
         <Text>Loading...</Text>
@@ -50,15 +51,13 @@ const OneArtist = ({ route }) => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({item}) => (
         <View style={styles.albumBox}>
-          <Text style={styles.albumTitle}>Album Name: {item.albumName}</Text>
-          <Text>Year: {item.year}</Text>
-          <Text>ID: {item.id}</Text>
-          <Text>Artist ID: {item.artistId}</Text>
+          <Text style={styles.albumTitle}>{item.albumName}</Text>
+          <Text>Release year: {item.year}</Text>
         </View>
       )}
 
-      //tää on kesken
-      numColumns={numColumns}
+      //tää on kesken  - siirto ehkä etusivulle
+      //numColumns={numColumns}
     />
     </View>
   );
@@ -69,21 +68,25 @@ const styles = StyleSheet.create({
     flex:2,
     padding: 16,
     backgroundColor: '#F5EFE7',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
   },
   albumBox: {
-    flex: 1,
     borderWidth: 1,
     borderColor: 'black',
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 10,
     marginBottom: 10,
   },
+  artistTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   albumTitle: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
   },
 });
