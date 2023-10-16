@@ -7,7 +7,7 @@ const ArtistScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const apiUrl = 'https://fishservice.ey.r.appspot.com/rest/vinylservice/readdata';
+    const apiUrl = 'https://fishservice.appspot.com/rest/vinylstore/readdata';
 
     fetch(apiUrl)
       .then((response) => response.json())
@@ -53,11 +53,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-  },
-  loadingText: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 100,
   },
   item: {
     backgroundColor: 'white',

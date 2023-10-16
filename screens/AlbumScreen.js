@@ -1,11 +1,43 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const AlbumScreen = () => {
+  const [data, setData] = useState([]);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const apiUrl = 'https://fishservice.appspot.com/rest/vinylstore/readalbumdata';
+
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((responseData) => {
+        setData(responseData);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  //const toArtistPage = (artistId) => {
+  //  navigation.navigate('OneArtist', { artistId });
+  //};
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>List all albums</Text>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+            <View style={styles.item}>
+              <Text>ID: {item.id}</Text>
+              <Text>Artist ID: {item.artistId}</Text>
+              <Text>Album name: {item.albumName}</Text>
+              <Text>Year: {item.year}</Text>
+            </View>
+        )}
+      />
     </View>
   );
 };
@@ -13,17 +45,21 @@ const AlbumScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#F5EFE7'
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 16,
   },
-  subtitle: {
-    fontSize: 18,
-    marginBottom: 20,
+  //tää on kesken
+  item: {
+    backgroundColor: 'white',
+    padding: 16,
+    marginBottom: 8,
+    borderRadius: 8,
+    elevation: 3,
   },
 });
 
