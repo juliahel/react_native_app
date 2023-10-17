@@ -1,0 +1,54 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-login-dev-145125-authRole",
+      "UnauthRoleArn": "arn:aws:iam::915009473384:role/amplify-login-dev-145125-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::915009473384:role/amplify-login-dev-145125-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-login-dev-145125-deployment",
+      "UnauthRoleName": "amplify-login-dev-145125-unauthRole",
+      "StackName": "amplify-login-dev-145125",
+      "StackId": "arn:aws:cloudformation:us-east-1:915009473384:stack/amplify-login-dev-145125/2c678990-6b51-11ee-baa5-0eea68f35acf",
+      "AmplifyAppId": "dckncflm2jxju"
+    }
+  },
+  "auth": {
+    "login": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-login-dev-145125-deployment/amplify-cfn-templates/auth/login-cloudformation-template.json",
+        "logicalId": "authlogin"
+      },
+      "lastPushTimeStamp": "2023-10-15T12:14:48.270Z",
+      "output": {
+        "UserPoolId": "us-east-1_iexVHIoRx",
+        "AppClientIDWeb": "2f7en6t7nefip8u0o8hkln4594",
+        "AppClientID": "58hufuh1mn9ooc6rmis332dmp0",
+        "IdentityPoolId": "us-east-1:5656e0e8-1b57-4b01-b183-581062794517",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:915009473384:userpool/us-east-1_iexVHIoRx",
+        "IdentityPoolName": "testAuthIdentityPool__dev",
+        "UserPoolName": "login"
+      },
+      "lastPushDirHash": "hSbEbsJxszJrPCRl2fVCsKqQlGU="
+    }
+  }
+}
