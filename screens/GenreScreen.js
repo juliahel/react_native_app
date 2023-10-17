@@ -1,18 +1,11 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
+const GenreScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to VintageVinyls</Text>
-      <Button
-        title="contact info"
-        color='#4F709C'
-        onPress={() => navigation.navigate('Contact')}
-      />
+      <Text style={styles.title}>List all genres</Text>
     </View>
   );
 };
@@ -24,7 +17,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    color: '#213555',
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -35,5 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
-
+export default GenreScreen;
