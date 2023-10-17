@@ -8,7 +8,7 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import Logo from '../../assets/images/vintagevinyls.png';
+import Logo from '../../assets/images/vv-logo.png';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 //import SocialSignInButtons from '../components/SocialSingInButtons/SocialSignInButtons';
@@ -55,7 +55,7 @@ const SignInScreen = () => {
 
   return (
     <ScrollView>
-      <View style={{padding: 40, alignItems: 'center'}}>
+      <View style={{padding: 20, alignItems: 'center'}}>
           <Image 
             source={Logo}
             style={[styles.logo, {height: height * 0.2}]}

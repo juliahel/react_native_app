@@ -6,11 +6,6 @@ const Footer = () => {
     const navigation = useNavigation();
   return (
     <View style={styles.footerContainer}>
-      <TouchableOpacity
-        style={styles.footerLink}
-        onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.footerText}>Login</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.footerLink}

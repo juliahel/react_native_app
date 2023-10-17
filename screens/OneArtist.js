@@ -45,20 +45,24 @@ const OneArtist = ({ route }) => {
       ) : (
         <Text>Loading...</Text>
       )}
-
     <FlatList
       data={albums}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({item}) => (
-        <View style={styles.albumBox}>
+        <View style={styles.item}>
           <Text style={styles.albumTitle}>{item.albumName}</Text>
           <Text>Release year: {item.year}</Text>
         </View>
       )}
-
+      
       //tää on kesken  - siirto ehkä etusivulle
       //numColumns={numColumns}
     />
+    
+    <View style={styles.related}>
+      <Text style={styles.relatedTitle}>Related artists</Text>
+      <Text>tähä vaik saman genren artistei</Text>
+    </View>
     </View>
   );
 };
@@ -74,12 +78,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  albumBox: {
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 10,
+  item: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 16,
+    marginBottom: 16,
+    marginRight: 8,
+    width: 300,
+    borderRadius: 8,
+    elevation: 3,
   },
   artistTitle: {
     fontWeight: 'bold',
@@ -87,6 +94,13 @@ const styles = StyleSheet.create({
   },
   albumTitle: {
     fontSize: 15,
+    fontWeight: 'bold',
+  },
+  related: {
+    alignItems: 'center',
+  },
+  relatedTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

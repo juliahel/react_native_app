@@ -25,7 +25,6 @@ const AlbumScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>List all albums</Text>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}

@@ -63,7 +63,7 @@ const AppNavigator = () => {
       <Header />
       <Stack.Navigator initialRouteName="Home"
         screenOptions={{
-          cardStyle: { backgroundColor: '#F5EFE7' }       
+          cardStyle: { backgroundColor: '#F5EFE7' }
         }}>
         {user ? (
           <Stack.Screen name="AdminHome" options={{headerShown: false}} component={AdminHomeScreen} />
@@ -71,12 +71,12 @@ const AppNavigator = () => {
           <>
           <Stack.Screen name="Home" component={HomeScreen}
             options={{
-            title: 'jepjep',
-            headerTintColor: 'black',
+            title: 'Welcome to VintageVinyls!',
             headerStyle: { 
               backgroundColor: '#F5EFE7',
               height: 50},
             headerTitleAlign: 'center',
+            headerTintColor: '#213555',
             }}/>
           <Stack.Screen name="SignIn" options={{headerShown: false}} component={SignInScreen} />
           <Stack.Screen name="SignUp" options={{headerShown: false}} component={SignUpScreen} />
@@ -84,9 +84,33 @@ const AppNavigator = () => {
           <Stack.Screen name="ForgotPassword" options={{headerShown: false}} component={ForgotPasswordScreen} />
           <Stack.Screen name="NewPassword" options={{headerShown: false}} component={NewPasswordScreen} />
           <Stack.Screen name="Login" options={{headerShown: false}} component={SignInScreen} />
-        <Stack.Screen name="Artists" component={ArtistScreen}/>
-        <Stack.Screen name="OneArtist" component={OneArtist} />
-        <Stack.Screen name="Albums" component={AlbumScreen} />
+        <Stack.Screen name="Artists" component={ArtistScreen}
+        options={{
+          title: 'All artists',
+          headerStyle: { 
+            backgroundColor: '#F5EFE7',
+            height: 50},
+          headerTitleAlign: 'left',
+          headerTintColor: '#213555',
+          }}/>
+        <Stack.Screen name="OneArtist" component={OneArtist}
+        options={{
+          title: 'Back to all artists',
+          headerStyle: { 
+            backgroundColor: '#F5EFE7',
+            height: 50},
+          headerTitleAlign: 'left',
+          headerTintColor: '#213555',
+          }}/>
+        <Stack.Screen name="Albums" component={AlbumScreen}
+        options={{
+          title: 'All albums',
+          headerStyle: { 
+            backgroundColor: '#F5EFE7',
+            height: 50},
+          headerTitleAlign: 'left',
+          headerTintColor: '#213555',
+          }}/>
         <Stack.Screen name="Genres" component={GenreScreen} />
         <Stack.Screen name="Contact" component={ContactScreen} />
           </>

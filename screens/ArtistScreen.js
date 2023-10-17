@@ -25,14 +25,14 @@ const ArtistScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>List all artists</Text>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
+        numColumns={2}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => toArtistPage(item.id)}>
             <View style={styles.item}>
-              <Text>ID: {item.id}</Text>
+              <Text>kuva?</Text>
               <Text>Name: {item.name}</Text>
               <Text>Genre: {item.genre}</Text>
             </View>
@@ -49,15 +49,13 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#F5EFE7'
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
   item: {
+    flex: 1,
     backgroundColor: 'white',
     padding: 16,
-    marginBottom: 8,
+    marginBottom: 16,
+    marginRight: 8,
+    width: 170,
     borderRadius: 8,
     elevation: 3,
   },
