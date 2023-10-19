@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 import {Auth} from 'aws-amplify';
 import { Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SignInScreen = () => {
    
@@ -56,14 +57,13 @@ const SignInScreen = () => {
   return (
     <ScrollView>
       <View style={{padding: 20, alignItems: 'center'}}>
-          <Image 
-            source={Logo}
-            style={[styles.logo, {height: height * 0.2}]}
-            resizeMode="contain"
-          />
+
+          <TouchableOpacity onPress={ () => navigation.navigate('Home')}>
+          <Image source={Logo} style={styles.logo}/>
+          </TouchableOpacity>
         </View>
-      <View style={styles.root}>
         
+      <View style={styles.root}>
 
         <CustomInput
           name="username"
@@ -108,9 +108,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-    width: '70%',
-    maxWidth: 300,
-    maxHeight: 200,
+    width: 200,
+    height: 200,
     padding: 20,
   },
 });
