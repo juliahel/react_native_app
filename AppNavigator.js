@@ -8,10 +8,10 @@ import OneArtist from './screens/OneArtist';
 import AlbumScreen from './screens/AlbumScreen';
 import GenreScreen from './screens/GenreScreen';
 import ContactScreen from './screens/ContactScreen';
-import Footer from './footer';
-import Header from './header';
+// import Footer from './footer';
+import CustomHeader from './header';
 
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity, Image } from 'react-native';
 
 import {Auth, Hub} from 'aws-amplify';
 import { ActivityIndicator } from 'react-native';
@@ -58,11 +58,12 @@ const AppNavigator = () => {
       </View>
     )
   }
+
   return (
     <NavigationContainer>
-      <Header />
       <Stack.Navigator initialRouteName="Home"
         screenOptions={{
+          header: () => <CustomHeader />,
           cardStyle: { backgroundColor: '#F5EFE7' }
         }}>
         {user ? (
@@ -117,7 +118,6 @@ const AppNavigator = () => {
         )
         }
       </Stack.Navigator>
-      <Footer />
     </NavigationContainer>
   );
 };
