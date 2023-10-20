@@ -11,5 +11,6 @@
   "java.compile.nullAnalysis.mode": "disabled",
   "java.project.sourcePaths": [
     "src/components"
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
