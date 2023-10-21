@@ -21,6 +21,7 @@ import SignUpScreen from './adminscreens/SignUpScreen';
 import ConfirmEmailScreen from './adminscreens/ConfirmEmailScreen';
 import ForgotPasswordScreen from './adminscreens/ForgotPasswordScreen';
 import NewPasswordScreen from './adminscreens/NewPasswordScreen';
+import AddDataScreen from './adminscreens/AddDataScreen';
 
 const Stack = createStackNavigator();
 
@@ -66,7 +67,10 @@ const AppNavigator = () => {
           cardStyle: { backgroundColor: '#F5EFE7' }
         }}>
         {user ? (
+          <>
           <Stack.Screen name="AdminHome" options={{headerShown: false}} component={AdminHomeScreen} />
+          <Stack.Screen name="AdminAdd" options={{headerShown: false}} component={AddDataScreen} />
+          </>
         ) : (
           <>
           <Stack.Screen name="Home" component={HomeScreen}
