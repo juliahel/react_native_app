@@ -16,13 +16,12 @@ import {View, Text, TouchableOpacity, Image } from 'react-native';
 import {Auth, Hub} from 'aws-amplify';
 import { ActivityIndicator } from 'react-native';
 
-import SignInScreen from './adminscreens/SignInScreen';
-import AdminHomeScreen from './adminscreens/AdminHomeScreen';
-import SignUpScreen from './adminscreens/SignUpScreen';
-import ConfirmEmailScreen from './adminscreens/ConfirmEmailScreen';
-import ForgotPasswordScreen from './adminscreens/ForgotPasswordScreen';
-import NewPasswordScreen from './adminscreens/NewPasswordScreen';
-import AddDataScreen from './adminscreens/AddDataScreen';
+import SignInScreen from './src/screens/SignInScreen';
+import AdminHomeScreen from './src/screens/AdminHomeScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+import ConfirmEmailScreen from './src/screens/ConfirmEmailScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import NewPasswordScreen from './src/screens/NewPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -68,10 +67,7 @@ const AppNavigator = () => {
           cardStyle: { backgroundColor: '#F5EFE7' }
         }}>
         {user ? (
-          <>
           <Stack.Screen name="AdminHome" options={{headerShown: false}} component={AdminHomeScreen} />
-          <Stack.Screen name="AdminAdd" options={{headerShown: false}} component={AddDataScreen} />
-          </>
         ) : (
           <>
           <Stack.Screen name="Home" component={HomeScreen}

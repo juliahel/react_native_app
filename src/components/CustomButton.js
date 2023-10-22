@@ -38,19 +38,11 @@ const styles = StyleSheet.create({
   },
 
   container_SECONDARY: {
-    borderColor: '#4F709C',
+    borderColor: '#3B71F3',
     borderWidth: 2,
   },
 
   container_TERTIARY: {},
-
-  container_EXTRA: {
-    backgroundColor: '#4F709C',
-    marginBottom: 10,
-    marginHorizontal: '1%',
-    width: '50%',
-    alignSelf: 'center',
-  },
 
   text: {
     fontWeight: 'bold',
@@ -58,15 +50,11 @@ const styles = StyleSheet.create({
   },
 
   text_SECONDARY: {
-    color: '#4F709C',
+    color: '#3B71F3',
   },
 
   text_TERTIARY: {
     color: 'gray',
-  },
-  text_EXTRA: {
-    fontWeight: 'bold',
-    color: 'white',
   },
 });
 
