@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -40,7 +40,8 @@ const Header = () => {
           <Icon name="sign-in-alt" size={25} color="#213555" />
         </TouchableOpacity>
         <View style={styles.iconSpacer} />
-        <TouchableOpacity onPress={() => navigation.navigate('ShoppingCart')}>
+        <TouchableOpacity onPress={() => Alert.alert('This is the shopping cart')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('ShoppingCart')}> */}
           <Icon name="shopping-cart" size={25} color="#213555" />
         </TouchableOpacity>
       </View>
