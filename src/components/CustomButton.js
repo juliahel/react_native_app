@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 
   container_PRIMARY: {
-    backgroundColor: '#4F709C',
+    backgroundColor: '#3B71F3',
   },
 
   container_SECONDARY: {

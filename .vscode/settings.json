@@ -8,9 +8,5 @@
     "amplify/backend/amplify-meta.json": true,
     "amplify/backend/awscloudformation": true
   },
-  "java.compile.nullAnalysis.mode": "disabled",
-  "java.project.sourcePaths": [
-    "src/components"
-  ],
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.compile.nullAnalysis.mode": "disabled"
 }
