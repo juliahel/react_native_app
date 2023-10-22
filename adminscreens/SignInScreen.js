@@ -7,15 +7,14 @@ import {
   useWindowDimensions,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native';
-import Logo from '../../assets/images/vv-logo.png';
+import Logo from '../assets/images/vv-logo.png';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
-//import SocialSignInButtons from '../components/SocialSingInButtons/SocialSignInButtons';
 import {useNavigation} from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 import {Auth} from 'aws-amplify';
-import { Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SignInScreen = () => {
@@ -89,8 +88,6 @@ const SignInScreen = () => {
           onPress={onForgotPasswordPressed}
           type="TERTIARY"
         />
-
-        {/* <SocialSignInButtons /> */}
 
         <CustomButton
           text="Don't have an account? Create one"
