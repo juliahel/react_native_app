@@ -108,7 +108,7 @@ const AddDataScreen = () => {
                 onChangeText={priceInputHandler}/>
             <TextInput style={styles.input} placeholder="Stock" value={stock}
                 onChangeText={stockInputHandler}/>
-            <CustomButton text='Add album' 
+            <CustomButton text='Add album a' 
                 onPress={()=>saveAlbum()}/>
             <CustomButton text='Return' 
                 onPress={()=>returnPressed()}/>
