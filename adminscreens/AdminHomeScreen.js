@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  TextInput,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -24,14 +25,44 @@ const AdminHomeScreen = () => {
   const navigation = useNavigation();
   const [artistData, setArtistData] = useState([]);
   const [albums, setAlbums] = useState([]);
+
+  // kaikki data yhteen
   const mergeById = (array1, array2) =>
     array1.map(itm => ({
       ...array2.find((item) => (item.id === itm.artistId) && item),
       ...itm
     }));
-
   const result = mergeById(albums, artistData);
+  
+  //hakutoimintoa varten
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
 
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the "result" dataset
+      // Update FilteredDataSource
+      const newData = result.filter(
+        function (item) {
+          const itemData = item.name
+            ? item.name.toUpperCase() + item.albumName.toUpperCase()
+            : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with "result" dataset
+      setFilteredDataSource(result);
+      setSearch(text);
+    }
+  };
+
+  // data backendistä
   useEffect(() => {
     const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readalbumdata`;
     const artistApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readdata`;
@@ -89,41 +120,47 @@ const AdminHomeScreen = () => {
   }
   
 
-  return (
+  return (  
         <View style={styles.container}>
           <View style={{flexDirection: 'row'}} >
-          
-          <CustomButton text='Add a new album' type='EXTRA' onPress={addData}/>
-          <View style={{width:'30%'}}></View>
-          <View style={styles.rightSection}>
-              <TouchableOpacity onPress={signOut}>
-                <Icon name="sign-out-alt" size={25} color="#213555" />
-              </TouchableOpacity>
-          </View >
-        </View>
-        <View style={{alignItems:'center', marginTop:30}}>
-          <Text style={styles.title} >Welcome to Admin area</Text>
-          <Text style={{padding:10}}>Here you can find a list of all albums. Longpress on an item to remove. </Text>
-        </View>   
-          
-            
-          
-        <FlatList
-          data={result}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onLongPress={() => {onPressDelete(item.id)}}>
-              <View style={styles.item}>
-                <Text>ID: {item.id}</Text>
-                <Text>Artist ID: {item.artistId}</Text>
-                <Text>Artist name: {item.name}</Text>
-                <Text>Album name: {item.albumName}</Text>
-                <Text>Year: {item.year}</Text>
-            </View>
-            </TouchableOpacity>
-        )}
-      />
+            <CustomButton text='Add a new album' type='EXTRA' onPress={addData}/>
+            <View style={{width:'30%'}}></View>
+            <View style={styles.rightSection}>
+                <TouchableOpacity onPress={signOut}>
+                  <Icon name="sign-out-alt" size={25} color="#213555" />
+                </TouchableOpacity>
+            </View >
+          </View>
+          <View style={{alignItems:'center', marginTop:30}}>
+            <Text style={styles.title} >Welcome to Admin area</Text>
+            <Text style={{padding:10}}>Here you can find a list of all albums. Click on an album to update or longpress to remove. You can search albums by name or artist. </Text>
+          </View>   
+          <View style={styles.container}>
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => searchFilterFunction(text)}
+              value={search}
+              underlineColorAndroid="transparent"
+              placeholder="Search Here"
+            />   
+            <FlatList
+              data={filteredDataSource}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity onLongPress={() => {onPressDelete(item.id)}}>
+                  <View style={styles.item}>
+                    <Text>ID: {item.id}</Text>
+                    <Text>Artist ID: {item.artistId}</Text>
+                    <Text>Artist name: {item.name}</Text>
+                    <Text>Album name: {item.albumName}</Text>
+                    <Text>Year: {item.year}</Text>
+                </View>
+                </TouchableOpacity>
+            )}
+          />
+          </View>
       </View>
+  
   );
 };
 
@@ -155,6 +192,28 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 20,
   },
+  itemStyle: {
+    padding: 10,
+  },
+  textInputStyle: {
+    height: 40,
+    borderWidth: 1,
+    paddingLeft: 20,
+    margin: 5,
+    borderColor: '#009688',
+    backgroundColor: '#FFFFFF',
+  },
+  input: {
+    backgroundColor: 'white',
+    width: '100%',
+
+    borderColor: '#e8e8e8',
+    borderWidth: 1,
+    borderRadius: 5,
+
+    paddingHorizontal: 10,
+    marginVertical: 5,
+},
 });
 
 export default AdminHomeScreen;
