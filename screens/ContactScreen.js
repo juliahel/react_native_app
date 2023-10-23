@@ -1,23 +1,57 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import CustomButton from '../components/CustomButton';
 
 const ContactScreen = () => {
+  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = () => {
+    
+    console.log('Message:', message);
+    console.log('Email:', email);
+
+    setMessage('');
+    setEmail('');
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.subtitle}>Tähän logo</Text>
+      <View style={styles.info}>
       <Text style={styles.title}>VintageVinyls</Text>
-      <Text style={styles.subtitle}>+358 01 234 5678</Text>
-      <Text style={styles.subtitle}>contact@vintagevinyls.com</Text>
+      <Text>+358 01 234 5678</Text>
+      <Text>contact@vintagevinyls.com</Text>
+      </View>
+    
+      <Text style={styles.subtitle}>Contact Us</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Your email"
+        value={email}
+        onChangeText={text => setEmail(text)}
+      />
+      <TextInput
+        style={styles.largeInput}
+        placeholder="Your message"
+        multiline
+        numberOfLines={4}
+        textAlignVertical='top'
+        value={message}
+        onChangeText={text => setMessage(text)}
+      />
+      <CustomButton text="Submit" onPress={handleSubmit} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
+  },
+  info: {
+    alignItems: 'center',
+    padding: 25,
   },
   title: {
     fontSize: 24,
@@ -25,8 +59,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 10,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingLeft: 10,
+  },
+  largeInput: {
+    width: '100%',
+    height: 120,
+    borderColor: 'gray',
+    borderWidth: 1,
     marginBottom: 20,
+    paddingLeft: 10,
   },
 });
 
