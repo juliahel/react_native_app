@@ -21,7 +21,8 @@ const Header = () => {
         <Icon name="bars" size={25} color="#213555" />
       </TouchableOpacity>
       <View style={styles.iconSpacer} />
-      <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+      <TouchableOpacity onPress={() => Alert.alert('This is the search button')}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate('Search')}> */}
         <Icon name="search" size={25} color="#213555" />
       </TouchableOpacity>
       </View>
