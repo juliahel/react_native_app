@@ -7,7 +7,7 @@ const AlbumScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const apiUrl = 'https://fishservice.appspot.com/rest/vinylstore/readalbumdata';
+    const apiUrl = 'https://fishservice.appspot.com/rest/vinylstore/readallalbums';
 
     fetch(apiUrl)
       .then((response) => response.json())
@@ -19,9 +19,9 @@ const AlbumScreen = () => {
       });
   }, []);
 
-  //const toArtistPage = (artistId) => {
-  //  navigation.navigate('OneArtist', { artistId });
-  //};
+  const toAlbumPage = (albumId) => {
+  navigation.navigate('OneAlbum', { albumId});
+  };
 
   return (
     <View style={styles.container}>
@@ -29,12 +29,13 @@ const AlbumScreen = () => {
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
+          <TouchableOpacity onPress={()=>toAlbumPage(item.id)}>
             <View style={styles.item}>
-              <Text>ID: {item.id}</Text>
-              <Text>Artist ID: {item.artistId}</Text>
+              <Text>Artist name: {item.name}</Text>
               <Text>Album name: {item.albumName}</Text>
               <Text>Year: {item.year}</Text>
             </View>
+          </TouchableOpacity>
         )}
       />
     </View>
