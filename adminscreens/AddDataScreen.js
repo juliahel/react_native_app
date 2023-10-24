@@ -5,104 +5,99 @@ import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
 import { ScrollView } from 'react-native-gesture-handler';
+import { response } from 'express';
 
 const AddDataScreen = () => {
     const navigation = useNavigation();
     const [albumName, setAlbumName]=useState();
-    const [albumYear, setAlbumYear]=useState();
+    const [year, setYear]=useState();
     const [description, setDescription]=useState();
     const [cond, setCond] = useState(1);
-    const [name, setArtistName]=useState();
+    const [name, setName]=useState();
     const [genre, setGenre]=useState();
     const [price, setPrice]=useState();
     const [stock, setStock]=useState();
+    const [vinylList, setVinylsList]=useState([]);
     
-    const [albums, setAlbums]=useState([]);
     
-    const [album, setAlbum]=useState(new Object());
-    // const [artist, setArtist]=useState(new Object());
-    // const [inventory, setInventory]=useState(new Object());
-    
-    const albumNameInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.albumName=enteredText;
+    const vinylsNameInputHandler = (enteredText) => {
+        setAlbumName(enteredText);
     }
-    const albumYearInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.year=enteredText;
+    const vinylsYearInputHandler = (enteredText) => {
+        setYear(enteredText);
     }
-    const albumDescriptionInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.description=enteredText;
+    const vinylsDescriptionInputHandler = (enteredText) => {
+        setDescription(enteredText);
     }
     const conditionInputHandler = (value) => {
         setCond(value === '1' ? 1 : 0); 
-        album.cond = value === '1' ? 1 : 0; 
       };
 
-    const artistNameInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.name=enteredText;
+    const nameInputHandler = (enteredText) => {
+        setName(enteredText);
     }
     const genreInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.genre=enteredText;
+        setGenre(enteredText);
     }
     const priceInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.price=enteredText;
+        enteredText = enteredText.replace(',', '.');
+        setPrice(enteredText);
     }
     const stockInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.stock=enteredText;
-    }
-
-    const setAlbumList=(list)=>{
-        setAlbums(list); 
-        console.log(albums);
+        setStock(enteredText);
     }
 
     const returnPressed=()=>{
         navigation.navigate('AdminHome');
     }
-   
-    const saveAlbum=async()=>{
-        await fetch("https://fishservice.appspot.com/rest/vinylstore/addalbum",
-          {
-            method:"POST",
-            headers:{
-              "Content-Type":"application/json"
-            },
-            body:JSON.stringify(album) // onnistuisikohan jos tekisi näistä vain yhden albumi-objektin ja lähettäisi sen backendiin? 
-          }
-          )
-          .then(response => response.json())
-          .then(json => setAlbumList(json))
-          .catch(error => console.log(error));
-        navigation.navigate('AdminHome');
-      }
 
-      const fetchAlbums=async()=>{
-        await fetch("https://fishservice.appspot.com/rest/vinylstore/readalbumdata")
-        .then(response => response.json())
-        .then(json => setAlbumList(json))
-        .catch(error => console.log(error));
+    const saveData = async () => {
+      const data = {
+          name,
+          genre,
+          albumName,
+          year,
+          description,
+          cond,
+          price,
+          stock,
+      };
+  
+      try {
+          const response = await fetch("https://fishservice.appspot.com/rest/vinylstore/addalbumlist", {
+              method: "POST",
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          });
+  
+          if (response.ok) {
+              navigation.navigate('AdminHome'); 
+          } else {
+              // Handle the case when the addition fails
+              console.error('Addition failed');
+          }
+      } catch (error) {
+          console.error('Fetch Error:', error);
       }
+  };
+   
 
     return (
       
         <View style={styles.container}>
         <View style={styles.formView}>
-            <TextInput style={styles.input} placeholder="Artist name"value={artistName}
-                    onChangeText={artistNameInputHandler}/>
+            <TextInput style={styles.input} placeholder="Artist name"value={name}
+                    onChangeText={nameInputHandler}/>
             <TextInput style={styles.input} placeholder="Genre" value={genre}
                 onChangeText={genreInputHandler}/>
             <TextInput style={styles.input} placeholder="Album name" value={albumName}
-                onChangeText={albumNameInputHandler}/>
-            <TextInput style={styles.input} placeholder="Release year" value={albumYear}
-                onChangeText={albumYearInputHandler}/>
+                onChangeText={vinylsNameInputHandler}/>
+            <TextInput style={styles.input} placeholder="Release year" value={year}
+                onChangeText={vinylsYearInputHandler}/>
             <TextInput style={styles.input} placeholder="Description" value={description}
-                onChangeText={albumDescriptionInputHandler}/>
+                onChangeText={vinylsDescriptionInputHandler}/>
             <TextInput style={styles.input} placeholder="Price" value={price}
                 onChangeText={priceInputHandler}/>
             <TextInput style={styles.input} placeholder="Stock" value={stock}
@@ -119,27 +114,10 @@ const AddDataScreen = () => {
                     </View>
                 </View>
                 </RadioButton.Group>
-            <CustomButton text='Add album a' 
-                onPress={()=>saveAlbum()}/>
-            <CustomButton text='Return' 
+               <CustomButton text='Add album a' 
+                onPress={()=>saveData()}/>
+                <CustomButton text='Return' 
                 onPress={()=>returnPressed()}/>
-        </View>
-        
-        <CustomButton text='Read All' 
-              onPress={fetchAlbums}/>
-        <View style={styles.listView}>
-          <FlatList
-            data={albums}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <View style={styles.item}>
-                  <Text>ID: {item.id}</Text>
-                  <Text>Artist ID: {item.artistId}</Text>
-                  <Text>Album name: {item.albumName}</Text>
-                  <Text>Year: {item.year}</Text>
-              </View>
-          )}
-        />
         </View>
         </View>
       );
