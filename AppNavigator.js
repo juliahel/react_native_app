@@ -8,6 +8,7 @@ import OneArtist from './screens/OneArtist';
 import AlbumScreen from './screens/AlbumScreen';
 import GenreScreen from './screens/GenreScreen';
 import ContactScreen from './screens/ContactScreen';
+import OneAlbum from './screens/OneAlbum';
 // import Footer from './footer';
 import CustomHeader from './header';
 
@@ -98,6 +99,15 @@ const AppNavigator = () => {
           headerTintColor: '#213555',
           }}/>
         <Stack.Screen name="OneArtist" component={OneArtist}
+        options={{
+          title: 'Back to all artists',
+          headerStyle: { 
+            backgroundColor: '#F5EFE7',
+            height: 50},
+          headerTitleAlign: 'left',
+          headerTintColor: '#213555',
+          }}/>
+        <Stack.Screen name="OneAlbum" component={OneAlbum}
         options={{
           title: 'Back to all artists',
           headerStyle: { 
