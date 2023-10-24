@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import CustomButton from '../components/CustomButton';
 
 const OneArtist = ({ route }) => {
   const { artistId } = route.params;
   const [artistData, setArtistData] = useState(null);
   const [albums, setAlbums] = useState([]);
+  const [allArtists, setAllArtists] = useState([]);
+  const [artistGenre, setArtistGenre] = useState([]);
+  const [relatedArtists, setRelatedArtists] = useState([]);
 
-  //tää on kesken - siirto ehkä etusivulle
-  //const [numColumns, setNumColumns] = useState(2);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const artistApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readartist/${artistId}`;
     const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readalbumdata`;
+    const allArtistsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readdata`;
 
     fetch(artistApiUrl)
       .then((response) => response.json())
       .then((responseData) => {
         setArtistData(responseData);
+        setArtistGenre(responseData.genre);
       })
       .catch((error) => {
         console.error('Error fetching artist data:', error);
@@ -31,6 +37,28 @@ const OneArtist = ({ route }) => {
       .catch((error) => {
         console.error('Error fetching albums:', error);
       });
+
+    fetch(allArtistsApiUrl)
+      .then((response) => response.json())
+      .then((responseData) => {
+        setAllArtists(responseData);
+      })
+      .catch((error) => {
+        console.error('Error fetching artist data:', error);
+      });
+  }, [artistId]);
+
+  const seeOtherArtists = () => {
+    if (artistGenre) {
+      const relatedArtists = allArtists.filter(
+        (artist) => artist.genre === artistGenre && artist.id !== artistId
+      );
+      setRelatedArtists(relatedArtists);
+    }
+  };
+
+  useEffect(() => {
+    setRelatedArtists([]);
   }, [artistId]);
 
   return (
@@ -45,24 +73,35 @@ const OneArtist = ({ route }) => {
       ) : (
         <Text>Loading...</Text>
       )}
-    <FlatList
-      data={albums}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({item}) => (
-        <View style={styles.item}>
-          <Text style={styles.albumTitle}>{item.albumName}</Text>
-          <Text>Release year: {item.year}</Text>
-        </View>
-      )}
+      <FlatList
+        data={albums}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => navigation.navigate('OneAlbum', { albumId: item.id })}>
+            <View style={styles.item}>
+              <Text style={styles.albumTitle}>{item.albumName}</Text>
+              <Text>Release year: {item.year}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+      <CustomButton text="See related artists" onPress={seeOtherArtists} />
       
-      //tää on kesken  - siirto ehkä etusivulle
-      //numColumns={numColumns}
-    />
-    
-    <View style={styles.related}>
-      <Text style={styles.relatedTitle}>Related artists</Text>
-      <Text>tähä vaik saman genren artistei</Text>
-    </View>
+      {relatedArtists.length > 0 ? (
+        <FlatList
+          data={relatedArtists}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={3}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => navigation.navigate('OneArtist', { artistId: item.id })}>
+              <View style={styles.related}>
+                <Text style={styles.relatedTitle}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      ) : null}
+
     </View>
   );
 };
@@ -97,12 +136,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   related: {
-    alignItems: 'center',
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 10,
+    margin: 5,
+    borderRadius: 8,
+    elevation: 3,
   },
   relatedTitle: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
   },
+
 });
 
 export default OneArtist;
