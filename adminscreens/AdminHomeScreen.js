@@ -41,25 +41,19 @@ const AdminHomeScreen = () => {
   const searchFilterFunction = (text) => {
     // Check if searched text is not blank
     if (text) {
-      // Inserted text is not blank
-      // Filter the "result" dataset
-      // Update FilteredDataSource
-      const newData = result.filter(
-        function (item) {
-          const itemData = item.name
-            ? item.name.toUpperCase() + item.albumName.toUpperCase()
-            : ''.toUpperCase();
-          const textData = text.toUpperCase();
-          return itemData.indexOf(textData) > -1;
+      // Filter the "result" dataset based on the search text
+      const newData = result.filter((item) => {
+        const itemData = (item.name + item.albumName).toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
       });
       setFilteredDataSource(newData);
-      setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with "result" dataset
+      // If search text is empty, show all albums
       setFilteredDataSource(result);
-      setSearch(text);
     }
+
+    setSearch(text); // Update the search query in state
   };
 
   // data backendistä
@@ -81,6 +75,7 @@ const AdminHomeScreen = () => {
       .then((response) => response.json())
       .then((responseData) => {
         setAlbums(responseData);
+        setFilteredDataSource(responseData);
         console.log(albums);
       })
       .catch((error) => {
@@ -136,16 +131,16 @@ const AdminHomeScreen = () => {
             <Text style={{padding:10}}>Here you can find a list of all albums. Click on an album to update or longpress to remove. You can search albums by name or artist. </Text>
           </View>   
           <View style={styles.container}>
-            <TextInput
+          <TextInput
               style={styles.input}
               onChangeText={(text) => searchFilterFunction(text)}
               value={search}
               underlineColorAndroid="transparent"
               placeholder="Search Here"
-            />   
+          />
             <FlatList
-              data={filteredDataSource}
-              keyExtractor={(item) => item.id.toString()}
+          data={filteredDataSource} // Use the filtered data for rendering
+          keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity onLongPress={() => {onPressDelete(item.id)}}>
                   <View style={styles.item}>

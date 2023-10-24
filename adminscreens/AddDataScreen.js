@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import { RadioButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
@@ -10,8 +11,8 @@ const AddDataScreen = () => {
     const [albumName, setAlbumName]=useState();
     const [albumYear, setAlbumYear]=useState();
     const [description, setDescription]=useState();
-    const [cond, setCond]=useState();
-    const [artistName, setArtistName]=useState();
+    const [cond, setCond] = useState(1);
+    const [name, setArtistName]=useState();
     const [genre, setGenre]=useState();
     const [price, setPrice]=useState();
     const [stock, setStock]=useState();
@@ -34,10 +35,10 @@ const AddDataScreen = () => {
         setAlbum(enteredText);
         album.description=enteredText;
     }
-    const albumCondInputHandler = (enteredText) => {
-        setAlbum(enteredText);
-        album.cond=enteredText;
-    }
+    const conditionInputHandler = (value) => {
+        setCond(value === '1' ? 1 : 0); 
+        album.cond = value === '1' ? 1 : 0; 
+      };
 
     const artistNameInputHandler = (enteredText) => {
         setAlbum(enteredText);
@@ -78,7 +79,7 @@ const AddDataScreen = () => {
           .then(response => response.json())
           .then(json => setAlbumList(json))
           .catch(error => console.log(error));
-        //navigation.navigate('AdminHome');
+        navigation.navigate('AdminHome');
       }
 
       const fetchAlbums=async()=>{
@@ -87,27 +88,37 @@ const AddDataScreen = () => {
         .then(json => setAlbumList(json))
         .catch(error => console.log(error));
       }
-    
 
     return (
+      
         <View style={styles.container}>
         <View style={styles.formView}>
+            <TextInput style={styles.input} placeholder="Artist name"value={artistName}
+                    onChangeText={artistNameInputHandler}/>
+            <TextInput style={styles.input} placeholder="Genre" value={genre}
+                onChangeText={genreInputHandler}/>
             <TextInput style={styles.input} placeholder="Album name" value={albumName}
                 onChangeText={albumNameInputHandler}/>
             <TextInput style={styles.input} placeholder="Release year" value={albumYear}
                 onChangeText={albumYearInputHandler}/>
             <TextInput style={styles.input} placeholder="Description" value={description}
                 onChangeText={albumDescriptionInputHandler}/>
-            <TextInput style={styles.input} placeholder="Condition" value={cond}
-                onChangeText={albumCondInputHandler}/>
-            <TextInput style={styles.input} placeholder="Artist name" value={artistName}
-                onChangeText={artistNameInputHandler}/>
-            <TextInput style={styles.input} placeholder="Genre" value={genre}
-                onChangeText={genreInputHandler}/>
             <TextInput style={styles.input} placeholder="Price" value={price}
                 onChangeText={priceInputHandler}/>
             <TextInput style={styles.input} placeholder="Stock" value={stock}
                 onChangeText={stockInputHandler}/>
+            <RadioButton.Group onValueChange={conditionInputHandler} value={cond.toString()}>
+                <View style={styles.radioButtonContainer}>
+                    <View style={styles.radioButtonItem}>
+                    <Text>New</Text>
+                    <RadioButton value="1" />
+                    </View>
+                    <View style={styles.radioButtonItem}>
+                    <Text>Used</Text>
+                    <RadioButton value="0" />
+                    </View>
+                </View>
+                </RadioButton.Group>
             <CustomButton text='Add album a' 
                 onPress={()=>saveAlbum()}/>
             <CustomButton text='Return' 
@@ -161,6 +172,16 @@ const styles = StyleSheet.create({
     listView: {
         flex:1
     },
+    radioButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        marginVertical: 10,
+      },
+      radioButtonItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
   });
 
 export default AddDataScreen;
