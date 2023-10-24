@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import CustomButton from '../components/CustomButton';
 
 const OneAlbum = ({ route }) => {
   const { albumId } = route.params;
@@ -33,13 +32,6 @@ const OneAlbum = ({ route }) => {
 
   }, [albumId]);
 
-  const seeOtherArtists = () => {
-    const otherArtists = allArtists.filter((album) => album.genre === albumData.genre);
-    setAlbumGenre(otherArtists);
-    const newgenre = albumgenre.genre;
-    console.log(newgenre);
-  }
-
   return (
     <View style={styles.container}>
       {albumData ? (
@@ -59,23 +51,7 @@ const OneAlbum = ({ route }) => {
       ) : (
         <Text>Loading...</Text>
       )}
-    <View style={styles.button} >
-      <CustomButton onPress={seeOtherArtists} text="See related artists" />
-      {/* tähän pitäisi vielä keksiä joku suodatin joka jättää näyttämättä tämän artistin */}
-    </View>
-    <FlatList
-      data={albumgenre}
-      keyExtractor={(item) => item.id.toString()}
-        renderItem={({item}) => (    
-        <View style={styles.item}>
-          <Text style={styles.albumTitle}>{item.name}</Text>
-          <Text>*Artist image*</Text>
-        </View>
-      )}
-    
-      //tää on kesken  - siirto ehkä etusivulle
-      //numColumns={numColumns}
-    />
+
     </View>
   );
 };
