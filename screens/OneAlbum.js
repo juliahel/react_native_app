@@ -40,7 +40,10 @@ const OneAlbum = ({ route }) => {
             <Text style={styles.artistTitle}>{albumData.albumName}</Text>
             <Text style={{fontSize:15, fontWeight: 'bold'}}>Album by: {albumData.name}</Text>
             <Text style={{fontSize:15}}>Genre: {albumData.genre}</Text>
-            <Text style={{width: '90%'}} >Description: {albumData.description}</Text>
+            <View style={{width: '90%', margin:5}} >
+              <Text style={{textAlign:'center'}} >Description:</Text>
+              <Text style={{textAlign:'center'}}>{albumData.description}</Text>
+            </View>
             {albumData.cond === 0 
             ? <Text>Condition: used </Text> 
             : <Text>Condition: new </Text>}

@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 import { Amplify, Auth } from 'aws-amplify';
 //import { withAuthenticator} from 'aws-amplify-react-native';
 //import config from '../aws-exports';
@@ -20,68 +19,44 @@ import SignInScreen from './SignInScreen';
 
 //Amplify.configure(config);
 
-
 const AdminHomeScreen = () => {
   const navigation = useNavigation();
-  const [artistData, setArtistData] = useState([]);
   const [albums, setAlbums] = useState([]);
-
-  // kaikki data yhteen
-  const mergeById = (array1, array2) =>
-    array1.map(itm => ({
-      ...array2.find((item) => (item.id === itm.artistId) && item),
-      ...itm
-    }));
-  const result = mergeById(albums, artistData);
-  
-  //hakutoimintoa varten
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
 
-  const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Filter the "result" dataset based on the search text
-      const newData = result.filter((item) => {
-        const itemData = (item.name + item.albumName).toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-    } else {
-      // If search text is empty, show all albums
-      setFilteredDataSource(result);
-    }
-
-    setSearch(text); // Update the search query in state
-  };
-
   // data backendistä
   useEffect(() => {
-    const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readalbumdata`;
-    const artistApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readdata`;
-
-    fetch(artistApiUrl)
-      .then((response) => response.json())
-      .then((responseData) => {
-        setArtistData(responseData);
-        console.log(artistData);
-      })
-      .catch((error) => {
-        console.error('Error fetching artist data:', error);
-      });
+      const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readallalbums`;
 
     fetch(albumsApiUrl)
       .then((response) => response.json())
       .then((responseData) => {
         setAlbums(responseData);
         setFilteredDataSource(responseData);
-        console.log(albums);
       })
       .catch((error) => {
         console.error('Error fetching albums:', error);
       });
   }, []);
+
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Filter the "result" dataset based on the search text
+      const newData = albums.filter((item) => {
+        const itemData = (item.name + item.albumName + item.year + item.genre).toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+    } else {
+      // If search text is empty, show all albums
+      setFilteredDataSource(albums);
+    }
+
+    setSearch(text); // Update the search query in state
+  };
 
   const signOut = async () => {
     try {
@@ -100,21 +75,23 @@ const AdminHomeScreen = () => {
   }
 
   const deleteAlbum = async (id) => {
-    await fetch("https://fishservice.appspot.com/rest/vinylstore/deletedata"+id,{method:"DELETE"}) // tähän pitää päivittää oikea osoite
+    await fetch("https://fishservice.appspot.com/rest/vinylstore/deletealbum"+id,{method:"DELETE"}) // tähän pitää päivittää oikea osoite
     .then(response => response.json())
-    .then(json => setAlbumList(json))
+    .then(json => {
+      setAlbumList(json);
+      Alert.alert('','Album with id: ' + id + ' deleted');
+    })
     .catch(error => console.log(error));
   }
 
   const onPressDelete = (id) => { //this function gets the id of the album as a parameter
     Alert.alert('', 'Are you sure you want to delete this album?', [
       {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},  
-      {text: 'OK', onPress: () => console.log('OK Pressed')}, // tähän pitää laittaa onPress: (id) => deleteAlbum(id) tms...
+      {text: 'OK', onPress: (id) => deleteAlbum(id)},
    ],
    { cancelable: false });
   }
   
-
   return (  
         <View style={styles.container}>
           <View style={{flexDirection: 'row'}} >
@@ -128,7 +105,8 @@ const AdminHomeScreen = () => {
           </View>
           <View style={{alignItems:'center', marginTop:30}}>
             <Text style={styles.title} >Welcome to Admin area</Text>
-            <Text style={{padding:10}}>Here you can find a list of all albums. Click on an album to update or longpress to remove. You can search albums by name or artist. </Text>
+            <Text style={{padding:10}}>Here you can find a list of all albums. Click on an album to update or longpress to remove. 
+              You can search albums by name, artist, year, or genre. </Text>
           </View>   
           <View style={styles.container}>
           <TextInput
@@ -139,17 +117,23 @@ const AdminHomeScreen = () => {
               placeholder="Search Here"
           />
             <FlatList
-          data={filteredDataSource} // Use the filtered data for rendering
-          keyExtractor={(item) => item.id.toString()}
+              data={filteredDataSource.sort(function(a, b) {
+                return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+               })} // Use the filtered data for rendering
+              keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity onLongPress={() => {onPressDelete(item.id)}}>
-                  <View style={styles.item}>
-                    <Text>ID: {item.id}</Text>
-                    <Text>Artist ID: {item.artistId}</Text>
+                    <View style={styles.item}>
+                    <Text style={{fontWeight:'bold'}} >{item.albumName}</Text>
                     <Text>Artist name: {item.name}</Text>
-                    <Text>Album name: {item.albumName}</Text>
+                    <Text>Genre: {item.genre}</Text>
                     <Text>Year: {item.year}</Text>
-                </View>
+                    <Text>Date added: {item.dateAdded}</Text>
+                    {item.cond === 0 
+                      ? <Text>Condition: used </Text> 
+                      : <Text>Condition: new </Text>}
+                    <Text>Price: <Text style={{fontWeight:'bold'}} >{item.price} €</Text></Text>
+                  </View>
                 </TouchableOpacity>
             )}
           />

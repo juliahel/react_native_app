@@ -18,6 +18,7 @@ const AddDataScreen = () => {
     const [price, setPrice]=useState();
     const [stock, setStock]=useState();
     const [vinylList, setVinylsList]=useState([]);
+    //const [albums, setAlbums] = useState([]);
     
     
     const vinylsNameInputHandler = (enteredText) => {
@@ -51,6 +52,10 @@ const AddDataScreen = () => {
         navigation.navigate('AdminHome');
     }
 
+    const setAlbumList=(list)=>{
+        setAlbums(list); // en ole nyt ihan varma mikä funktio tähän tulee eli mitä datasettiä tässä lähdetään muokkaamaan...veikkaisin että tämä
+      }
+
     const saveData = async () => {
       const data = {
           name,
@@ -61,7 +66,7 @@ const AddDataScreen = () => {
           cond,
           price,
           stock,
-      };
+      };    
   
       try {
           const response = await fetch("https://fishservice.appspot.com/rest/vinylstore/addalbumlist", {
@@ -70,7 +75,15 @@ const AddDataScreen = () => {
                   'Content-Type': 'application/json'
               },
               body: JSON.stringify(data)
-          });
+            });
+            // .then(response => response.json())
+            // .then((json) => {
+            //     setAlbumList(json);
+            //     console.log(albums);
+            //     navigation.navigate('AdminHome');
+            // })
+            // .catch(error => console.log(error))
+            
   
           if (response.ok) {
               navigation.navigate('AdminHome'); 
@@ -88,6 +101,7 @@ const AddDataScreen = () => {
       
         <View style={styles.container}>
         <View style={styles.formView}>
+            <Text style={{fontSize:20, color:'#213555', alignSelf:'center', marginBottom:5}} >Fill in the information</Text>
             <TextInput style={styles.input} placeholder="Artist name"value={name}
                     onChangeText={nameInputHandler}/>
             <TextInput style={styles.input} placeholder="Genre" value={genre}
@@ -114,7 +128,7 @@ const AddDataScreen = () => {
                     </View>
                 </View>
                 </RadioButton.Group>
-               <CustomButton text='Add album a' 
+               <CustomButton text='Add album' 
                 onPress={()=>saveData()}/>
                 <CustomButton text='Return' 
                 onPress={()=>returnPressed()}/>

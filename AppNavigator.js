@@ -9,6 +9,7 @@ import AlbumScreen from './screens/AlbumScreen';
 import GenreScreen from './screens/GenreScreen';
 import ContactScreen from './screens/ContactScreen';
 import OneAlbum from './screens/OneAlbum';
+import SearchScreen from './screens/SearchScreen';
 // import Footer from './footer';
 import CustomHeader from './header';
 
@@ -119,6 +120,15 @@ const AppNavigator = () => {
         <Stack.Screen name="Albums" component={AlbumScreen}
         options={{
           title: 'All albums',
+          headerStyle: { 
+            backgroundColor: '#F5EFE7',
+            height: 50},
+          headerTitleAlign: 'left',
+          headerTintColor: '#213555',
+          }}/>
+          <Stack.Screen name="Search" component={SearchScreen}
+        options={{
+          title: 'Search',
           headerStyle: { 
             backgroundColor: '#F5EFE7',
             height: 50},
