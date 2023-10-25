@@ -25,8 +25,11 @@ const ArtistScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={{fontSize:20, alignSelf: 'center', fontWeight:'bold', color:'#213555', marginBottom:10}} >Artists</Text>
       <FlatList
-        data={data}
+        data={data.sort(function(a, b) {
+          return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+         })}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         renderItem={({ item }) => (

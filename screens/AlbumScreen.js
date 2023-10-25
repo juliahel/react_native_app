@@ -25,15 +25,20 @@ const AlbumScreen = () => {
 
   return (
     <View style={styles.container}>
+    <Text style={{fontSize:20, alignSelf: 'center', fontWeight:'bold', color:'#213555', marginBottom:10}} >Albums</Text>
       <FlatList
-        data={data}
+        data={data.sort(function(a, b) {
+          return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+         })
+        }
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={()=>toAlbumPage(item.id)}>
             <View style={styles.item}>
+            <Text style={{fontWeight:'bold'}} >{item.albumName}</Text>
               <Text>Artist name: {item.name}</Text>
-              <Text>Album name: {item.albumName}</Text>
               <Text>Year: {item.year}</Text>
+              <Text style={{fontWeight:'bold'}} >{item.price} €</Text>
             </View>
           </TouchableOpacity>
         )}
