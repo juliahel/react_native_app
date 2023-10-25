@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../components/CustomButton';
@@ -52,54 +52,55 @@ const AddDataScreen = () => {
         navigation.navigate('AdminHome');
     }
 
+ 
+
     const setAlbumList=(list)=>{
         setAlbums(list); // en ole nyt ihan varma mikä funktio tähän tulee eli mitä datasettiä tässä lähdetään muokkaamaan...veikkaisin että tämä
-      }
+    }
 
     const saveData = async () => {
-      const data = {
-          name,
-          genre,
-          albumName,
-          year,
-          description,
-          cond,
-          price,
-          stock,
-      };    
-  
-      try {
-          const response = await fetch("https://fishservice.appspot.com/rest/vinylstore/addalbumlist", {
-              method: "POST",
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data)
+        if (!name || !genre || !albumName || !year || !description || !price || !stock) {
+            alert('Please fill in all required fields');
+        return;
+        }
+        const data = {
+            name,
+            genre,
+            albumName,
+            year,
+            description,
+            cond,
+            price,
+            stock,
+        };
+        try {
+            const response = await fetch("https://fishservice.appspot.com/rest/vinylstore/addalbumlist", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             });
-            // .then(response => response.json())
-            // .then((json) => {
-            //     setAlbumList(json);
-            //     console.log(albums);
-            //     navigation.navigate('AdminHome');
-            // })
-            // .catch(error => console.log(error))
-            
-  
-          if (response.ok) {
-              navigation.navigate('AdminHome'); 
-          } else {
-              // Handle the case when the addition fails
-              console.error('Addition failed');
-          }
-      } catch (error) {
-          console.error('Fetch Error:', error);
-      }
-  };
+    
+            if (response.ok) {
+                Alert.alert ('Album added successfully', '', 
+                [{text: 'OK', onPress: () => {
+                    navigation.navigate('AdminHome');
+                    },
+                    },
+                ]);
+            } else {
+                alert('Failed to add the album');
+            }
+        } catch (error) {
+            console.error('Fetch Error:', error);
+        }
+    };
    
 
     return (
       
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
         <View style={styles.formView}>
             <Text style={{fontSize:20, color:'#213555', alignSelf:'center', marginBottom:5}} >Fill in the information</Text>
             <TextInput style={styles.input} placeholder="Artist name"value={name}
@@ -110,7 +111,7 @@ const AddDataScreen = () => {
                 onChangeText={vinylsNameInputHandler}/>
             <TextInput style={styles.input} placeholder="Release year" value={year}
                 onChangeText={vinylsYearInputHandler}/>
-            <TextInput style={styles.input} placeholder="Description" value={description}
+            <TextInput style={[styles.input, { height: 100 }]} multiline={true} numberOfLines={5} placeholder="Description" value={description}
                 onChangeText={vinylsDescriptionInputHandler}/>
             <TextInput style={styles.input} placeholder="Price" value={price}
                 onChangeText={priceInputHandler}/>
@@ -133,7 +134,7 @@ const AddDataScreen = () => {
                 <CustomButton text='Return' 
                 onPress={()=>returnPressed()}/>
         </View>
-        </View>
+        </ScrollView>
       );
 }
 
@@ -173,6 +174,10 @@ const styles = StyleSheet.create({
       radioButtonItem: {
         flexDirection: 'row',
         alignItems: 'center',
+      },
+      okAlert:{
+        color: 'green',
+        fontSize:20,
       },
   });
 
