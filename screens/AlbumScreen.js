@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import albumImg1 from '../assets/images/album/album-img1.jpg';
+import albumImg2 from '../assets/images/album/album-img2.jpg';
+import albumImg3 from '../assets/images/album/album-img3.jpg';
+import albumImg4 from '../assets/images/album/album-img4.jpg';
+import albumImg5 from '../assets/images/album/album-img5.jpg';
 
 const AlbumScreen = () => {
   const [data, setData] = useState([]);
@@ -12,15 +18,25 @@ const AlbumScreen = () => {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((responseData) => {
-        setData(responseData);
+        const albumImageIndex = responseData.map((item, index) => ({
+          ...item,
+          imageIndex: index % 5,
+        }));
+        setData(albumImageIndex);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
 
-  const toAlbumPage = (albumId) => {
-  navigation.navigate('OneAlbum', { albumId});
+  const toAlbumPage = (albumId, albumImageSource) => {
+  navigation.navigate('OneAlbum', { albumId, albumImageSource});
+  };
+
+  const albumImages = [albumImg1, albumImg2, albumImg3, albumImg4, albumImg5];
+
+  const getAlbumImage = (imageIndex) => {
+    return albumImages[imageIndex];
   };
 
   return (
@@ -32,11 +48,13 @@ const AlbumScreen = () => {
          })
         }
         keyExtractor={(item) => item.id.toString()}
+        numColumns={2}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={()=>toAlbumPage(item.id)}>
+          <TouchableOpacity onPress={()=>toAlbumPage(item.id, getAlbumImage(item.imageIndex))}>
             <View style={styles.item}>
+            <Image source={getAlbumImage(item.imageIndex)} style={styles.image} />
             <Text style={{fontWeight:'bold'}} >{item.albumName}</Text>
-              <Text>Artist name: {item.name}</Text>
+              <Text>Artist: {item.name}</Text>
               <Text>Year: {item.year}</Text>
               <Text style={{fontWeight:'bold'}} >{item.price} €</Text>
             </View>
@@ -50,7 +68,7 @@ const AlbumScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 20,
     backgroundColor: '#F5EFE7'
   },
   title: {
@@ -58,13 +76,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  //tää on kesken
   item: {
+    flex: 1,
     backgroundColor: 'white',
     padding: 16,
     marginBottom: 8,
+    marginRight: 10,
+    width: 170,
     borderRadius: 8,
     elevation: 3,
+    alignItems: 'center',
+  },
+  image: {
+    height: 100,
+    width: "100%",
+    marginBottom: 8,
+    borderRadius: 8,
   },
 });
 

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import artistImg1 from '../assets/images/artist/artist-img1.jpg';
+import artistImg2 from '../assets/images/artist/artist-img2.jpg';
+import artistImg3 from '../assets/images/artist/artist-img3.jpg';
+import artistImg4 from '../assets/images/artist/artist-img4.jpg';
+import artistImg5 from '../assets/images/artist/artist-img5.jpg';
 
 const ArtistScreen = () => {
   const [data, setData] = useState([]);
@@ -12,15 +18,25 @@ const ArtistScreen = () => {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((responseData) => {
-        setData(responseData);
+        const artistImageIndex = responseData.map((item, index) => ({
+          ...item,
+          imageIndex: index % 5,
+        }));
+        setData(artistImageIndex);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
 
-  const toArtistPage = (artistId) => {
-    navigation.navigate('OneArtist', { artistId });
+  const toArtistPage = (artistId, artistImageSource) => {
+    navigation.navigate('OneArtist', { artistId, artistImageSource });
+  };
+  
+  const artistImages = [artistImg1, artistImg2, artistImg3, artistImg4, artistImg5];
+  
+  const getArtistImage = (imageIndex) => {
+    return artistImages[imageIndex];
   };
 
   return (
@@ -33,9 +49,9 @@ const ArtistScreen = () => {
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => toArtistPage(item.id)}>
+          <TouchableOpacity onPress={() => toArtistPage(item.id, getArtistImage(item.imageIndex))}>
             <View style={styles.item}>
-              <Text>kuva?</Text>
+              <Image source={getArtistImage(item.imageIndex)} style={styles.image} />
               <Text>Name: {item.name}</Text>
               <Text>Genre: {item.genre}</Text>
             </View>
@@ -61,6 +77,12 @@ const styles = StyleSheet.create({
     width: 170,
     borderRadius: 8,
     elevation: 3,
+  },
+  image: {
+    height: 100,
+    width: "100%",
+    marginBottom: 8,
+    borderRadius: 8,
   },
 });
 

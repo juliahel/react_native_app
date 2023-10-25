@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../components/CustomButton';
 
+import albumImg1 from '../assets/images/album/album-img1.jpg';
+import albumImg2 from '../assets/images/album/album-img2.jpg';
+import albumImg3 from '../assets/images/album/album-img3.jpg';
+import albumImg4 from '../assets/images/album/album-img4.jpg';
+import albumImg5 from '../assets/images/album/album-img5.jpg';
+
 const OneArtist = ({ route }) => {
-  const { artistId } = route.params;
+  const { artistId, artistImageSource } = route.params;
   const [artistData, setArtistData] = useState(null);
   const [albums, setAlbums] = useState([]);
   const [allArtists, setAllArtists] = useState([]);
@@ -32,7 +38,12 @@ const OneArtist = ({ route }) => {
       .then((response) => response.json())
       .then((responseData) => {
         const artistAlbums = responseData.filter((album) => album.artistId === artistId);
-        setAlbums(artistAlbums);
+        const albumImageIndex = artistAlbums.map((item, index) => ({
+          ...item,
+          imageIndex: index % 5,
+        }));
+    
+        setAlbums(albumImageIndex);
       })
       .catch((error) => {
         console.error('Error fetching albums:', error);
@@ -47,6 +58,16 @@ const OneArtist = ({ route }) => {
         console.error('Error fetching artist data:', error);
       });
   }, [artistId]);
+
+  const toAlbumPage = (albumId, albumImageSource) => {
+    navigation.navigate('OneAlbum', { albumId, albumImageSource});
+    };
+  
+    const albumImages = [albumImg1, albumImg2, albumImg3, albumImg4, albumImg5];
+  
+    const getAlbumImage = (imageIndex) => {
+      return albumImages[imageIndex];
+    };
 
   const seeOtherArtists = () => {
     if (artistGenre) {
@@ -65,8 +86,8 @@ const OneArtist = ({ route }) => {
     <View style={styles.container}>
       {artistData ? (
         <>
+          <Image source={artistImageSource} style={styles.artistImage} />
           <Text style={styles.artistTitle}>{artistData.name}</Text>
-          <Text style={styles.title}>*Artist image*</Text>
           <Text>Albums by {artistData.name}:</Text>
           <Text> </Text>
         </>
@@ -76,11 +97,13 @@ const OneArtist = ({ route }) => {
       <FlatList
         data={albums}
         keyExtractor={(item) => item.id.toString()}
+        numColumns={3}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('OneAlbum', { albumId: item.id })}>
+          <TouchableOpacity onPress={()=>toAlbumPage(item.id, getAlbumImage(item.imageIndex))}>
             <View style={styles.item}>
+            <Image source={getAlbumImage(item.imageIndex)} style={styles.albumImage} />
               <Text style={styles.albumTitle}>{item.albumName}</Text>
-              <Text>Release year: {item.year}</Text>
+              <Text style={styles.albumText}>{item.year}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -93,7 +116,7 @@ const OneArtist = ({ route }) => {
           keyExtractor={(item) => item.id.toString()}
           numColumns={3}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => navigation.navigate('OneArtist', { artistId: item.id })}>
+            <TouchableOpacity onPress={() => navigation.navigate('OneArtist', { artistId: item.id, artistImageSource })}>
               <View style={styles.related}>
                 <Text style={styles.relatedTitle}>{item.name}</Text>
               </View>
@@ -113,6 +136,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5EFE7',
     alignItems: 'center',
   },
+  artistImage: {
+    width: "90%",
+    height: 200,
+    marginBottom: 20,
+  },
+  albumImage: {
+    height: 60,
+    width: "100%",
+    marginBottom: 8,
+    borderRadius: 8,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -120,10 +154,10 @@ const styles = StyleSheet.create({
   item: {
     flex: 1,
     backgroundColor: 'white',
-    padding: 16,
+    padding: 9,
     marginBottom: 16,
     marginRight: 8,
-    width: 300,
+    width: 110,
     borderRadius: 8,
     elevation: 3,
   },
@@ -132,9 +166,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   albumTitle: {
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: 'bold',
   },
+  albumText: {
+    fontSize: 11,
+  }, 
   related: {
     flex: 1,
     backgroundColor: 'white',
