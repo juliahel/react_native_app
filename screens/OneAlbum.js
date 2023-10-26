@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 const OneAlbum = ({ route }) => {
-  const { albumId } = route.params;
+  const { albumId, albumImageSource } = route.params;
   const [albumData, setAlbumData] = useState(null);
+  const [album, setAlbum] = useState([]);
   const [allArtists, setAllArtists] = useState([]);
   const [albumgenre, setAlbumGenre] = useState([]);
 
   useEffect(() => {
     const albumApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readalbum/${albumId}`;
     const allArtistsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readdata`;
+    const allAlbumsApiUrl = 'https://fishservice.appspot.com/rest/vinylstore/readallalbums';
 
     fetch(albumApiUrl)
       .then((response) => response.json())
@@ -30,13 +32,22 @@ const OneAlbum = ({ route }) => {
         console.error('Error fetching artist data:', error);
       });
 
+      fetch(allAlbumsApiUrl)
+      .then((response) => response.json())
+      .then((responseData) => {
+        setAlbum(responseData);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+
   }, [albumId]);
 
   return (
     <View style={styles.container}>
       {albumData ? (
         <>
-            <Text style={styles.title}>*Album image*</Text>
+            <Image source={albumImageSource} style={styles.albumImage} />
             <Text style={styles.artistTitle}>{albumData.albumName}</Text>
             <Text style={{fontSize:15, fontWeight: 'bold'}}>Album by: {albumData.name}</Text>
             <Text style={{fontSize:15}}>Genre: {albumData.genre}</Text>
@@ -47,6 +58,7 @@ const OneAlbum = ({ route }) => {
             {albumData.cond === 0 
             ? <Text>Condition: used </Text> 
             : <Text>Condition: new </Text>}
+            <Text>Stock: {albumData.stock}</Text>
             <Text>Price: {albumData.price} €</Text>
             <Text></Text>
           <Text> </Text>
@@ -66,9 +78,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5EFE7',
     alignItems: 'center',
   },
-  button: {
-    width: '80%',
-    paddingBottom: 10,
+  albumImage: {
+    width: 250,
+    height: 250,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
