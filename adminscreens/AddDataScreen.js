@@ -17,8 +17,12 @@ const AddDataScreen = () => {
     const [genre, setGenre]=useState();
     const [price, setPrice]=useState();
     const [stock, setStock]=useState();
-    const [vinylList, setVinylsList]=useState([]);
-    //const [albums, setAlbums] = useState([]);
+    const [albums, setAlbums]=useState([]);
+
+    const setAlbumList=(list)=>{
+        setAlbums(list);
+    }
+   
     
     
     const vinylsNameInputHandler = (enteredText) => {
@@ -52,18 +56,12 @@ const AddDataScreen = () => {
         navigation.navigate('AdminHome');
     }
 
- 
-
-    const setAlbumList=(list)=>{
-        setAlbums(list); // en ole nyt ihan varma mikä funktio tähän tulee eli mitä datasettiä tässä lähdetään muokkaamaan...veikkaisin että tämä
-    }
-
     const saveData = async () => {
         if (!name || !genre || !albumName || !year || !description || !price || !stock) {
             alert('Please fill in all required fields');
         return;
         }
-        const data = {
+        const newAlbum = {
             name,
             genre,
             albumName,
@@ -79,10 +77,11 @@ const AddDataScreen = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(newAlbum)
             });
     
             if (response.ok) {
+                setAlbums([...albums, newAlbum]);
                 Alert.alert ('Album added successfully', '', 
                 [{text: 'OK', onPress: () => {
                     navigation.navigate('AdminHome');
@@ -99,24 +98,23 @@ const AddDataScreen = () => {
    
 
     return (
-      
-        <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}>
         <View style={styles.formView}>
             <Text style={{fontSize:20, color:'#213555', alignSelf:'center', marginBottom:5}} >Fill in the information</Text>
             <TextInput style={styles.input} placeholder="Artist name"value={name}
                     onChangeText={nameInputHandler}/>
             <TextInput style={styles.input} placeholder="Genre" value={genre}
-                onChangeText={genreInputHandler}/>
+                    onChangeText={genreInputHandler}/>
             <TextInput style={styles.input} placeholder="Album name" value={albumName}
-                onChangeText={vinylsNameInputHandler}/>
+                    onChangeText={vinylsNameInputHandler}/>
             <TextInput style={styles.input} placeholder="Release year" value={year}
-                onChangeText={vinylsYearInputHandler}/>
+                    onChangeText={vinylsYearInputHandler}/>
             <TextInput style={[styles.input, { height: 100 }]} multiline={true} numberOfLines={5} placeholder="Description" value={description}
-                onChangeText={vinylsDescriptionInputHandler}/>
+                    onChangeText={vinylsDescriptionInputHandler}/>
             <TextInput style={styles.input} placeholder="Price" value={price}
-                onChangeText={priceInputHandler}/>
+                    onChangeText={priceInputHandler}/>
             <TextInput style={styles.input} placeholder="Stock" value={stock}
-                onChangeText={stockInputHandler}/>
+                    onChangeText={stockInputHandler}/>
             <RadioButton.Group onValueChange={conditionInputHandler} value={cond.toString()}>
                 <View style={styles.radioButtonContainer}>
                     <View style={styles.radioButtonItem}>
