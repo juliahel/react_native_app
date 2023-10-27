@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, LogBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../components/CustomButton';
 
@@ -23,6 +23,7 @@ const OneArtist = ({ route }) => {
     const artistApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readartist/${artistId}`;
     const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readalbumdata`;
     const allArtistsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readdata`;
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
     fetch(artistApiUrl)
       .then((response) => response.json())
@@ -83,6 +84,7 @@ const OneArtist = ({ route }) => {
   }, [artistId]);
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       {artistData ? (
         <>
@@ -114,7 +116,7 @@ const OneArtist = ({ route }) => {
         <FlatList
           data={relatedArtists}
           keyExtractor={(item) => item.id.toString()}
-          numColumns={3}
+          numColumns={2}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => navigation.navigate('OneArtist', { artistId: item.id, artistImageSource })}>
               <View style={styles.related}>
@@ -126,6 +128,7 @@ const OneArtist = ({ route }) => {
       ) : null}
 
     </View>
+    </ScrollView>
   );
 };
 
@@ -160,6 +163,8 @@ const styles = StyleSheet.create({
     width: 110,
     borderRadius: 8,
     elevation: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   artistTitle: {
     fontWeight: 'bold',
