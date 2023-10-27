@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import albumImg1 from '../assets/images/album/album-img1.jpg';
+import albumImg2 from '../assets/images/album/album-img2.jpg';
+import albumImg3 from '../assets/images/album/album-img3.jpg';
+import albumImg4 from '../assets/images/album/album-img4.jpg';
+import albumImg5 from '../assets/images/album/album-img5.jpg';
 
 const SearchScreen = () => {
     const [data, setData] = useState([]);
@@ -11,19 +17,24 @@ const SearchScreen = () => {
     useEffect(() => {
       const apiUrl = 'https://fishservice.appspot.com/rest/vinylstore/readallalbums';
   
-      fetch(apiUrl)
+      fetch(apiUrl) 
         .then((response) => response.json())
         .then((responseData) => {
           setData(responseData);
-          setFilteredDataSource(responseData);
+          const albumImageIndex = responseData.map((item, index) => ({
+            ...item,
+            imageIndex: index % 5,
+          }));
+          setData(albumImageIndex);
+          setFilteredDataSource(albumImageIndex);
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
         });
     }, []);
   
-    const toAlbumPage = (albumId) => {
-    navigation.navigate('OneAlbum', { albumId});
+    const toAlbumPage = (albumId, albumImageSource) => {
+    navigation.navigate('OneAlbum', { albumId, albumImageSource});
     };
 
     const searchFilterFunction = (text) => {
@@ -43,6 +54,12 @@ const SearchScreen = () => {
     
         setSearch(text); // Update the search query in state
       };
+
+    const albumImages = [albumImg1, albumImg2, albumImg3, albumImg4, albumImg5];
+
+    const getAlbumImage = (imageIndex) => {
+      return albumImages[imageIndex];
+    };
   
     return (
       <View style={styles.container}>
@@ -61,16 +78,18 @@ const SearchScreen = () => {
           }
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={()=>toAlbumPage(item.id)}>
+            <TouchableOpacity onPress={()=>toAlbumPage(item.id, getAlbumImage(item.imageIndex))}>
               <View style={styles.item}>
-              <Text style={{fontWeight:'bold'}} >{item.albumName}</Text>
-                <Text>Artist name: {item.name}</Text>
-                <Text>Genre: {item.genre}</Text>
-                <Text>Year: {item.year}</Text>
-                {item.cond === 0 
-                    ? <Text>Condition: used </Text> 
-                    : <Text>Condition: new </Text>}
-                <Text style={{fontWeight:'bold'}} >{item.price} €</Text>
+              <Image source={getAlbumImage(item.imageIndex)} style={styles.image} />
+              <Text>
+                <Text style={{ fontWeight: 'bold' }}>{item.albumName}</Text>
+                <Text> by </Text>
+                <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
+                <Text>{item.cond === 0 ? ' (used) ' : ' (new) '}</Text>
+              </Text>
+              <Text>Year: {item.year}</Text>
+              <Text>Genre: {item.genre}</Text>
+              <Text style={{fontWeight:'bold'}} >{item.price} €</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -90,13 +109,19 @@ const SearchScreen = () => {
       fontWeight: 'bold',
       marginBottom: 16,
     },
-    //tää on kesken
+    image: {
+      height: 100,
+      width: "100%",
+      marginBottom: 8,
+      borderRadius: 8,
+    },
     item: {
       backgroundColor: 'white',
       padding: 16,
       marginBottom: 8,
       borderRadius: 8,
       elevation: 3,
+      alignItems: 'center',
     },
     textInputStyle: {
         height: 40,
