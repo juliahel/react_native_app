@@ -6,7 +6,6 @@ import HomeScreen from './screens/HomeScreen';
 import ArtistScreen from './screens/ArtistScreen';
 import OneArtist from './screens/OneArtist';
 import AlbumScreen from './screens/AlbumScreen';
-import GenreScreen from './screens/GenreScreen';
 import ContactScreen from './screens/ContactScreen';
 import OneAlbum from './screens/OneAlbum';
 import SearchScreen from './screens/SearchScreen';
@@ -135,7 +134,6 @@ const AppNavigator = () => {
           headerTitleAlign: 'left',
           headerTintColor: '#213555',
           }}/>
-        <Stack.Screen name="Genres" component={GenreScreen} />
         <Stack.Screen name="Contact" component={ContactScreen} />
           </>
         )
