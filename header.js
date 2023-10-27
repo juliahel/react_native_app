@@ -56,9 +56,6 @@ const Header = () => {
           <TouchableOpacity onPress={() => navigation.navigate('Albums')}>
             <Text style={styles.drawerItem}>Albums</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Genres')}>
-            <Text style={styles.drawerItem}>Genres</Text>
-          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Contact')}>
             <Text style={styles.drawerItem}>Contact</Text>
           </TouchableOpacity>
