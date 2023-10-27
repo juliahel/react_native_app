@@ -81,21 +81,29 @@ const AdminHomeScreen = () => {
 
 
   const deleteAlbum = async (id) => {
-    await fetch("https://fishservice.appspot.com/rest/vinylstore/deletealbum"+id,{method:"DELETE"}) // tähän pitää päivittää oikea osoite
-    .then(response => response.json())
-    .then(json => {
-      setAlbumList(json);
-      Alert.alert('','Album with id: ' + id + ' deleted');
-    })
-    .catch(error => console.log(error));
-  }
-
-  const onPressDelete = (id) => { //this function gets the id of the album as a parameter
+    try {
+      const response = await fetch(`https://fishservice.appspot.com/rest/vinylstore/deletealbum/`+id, {
+        method: "DELETE",
+      });
+  
+      if (response.ok) {
+        Alert.alert('', 'Album deleted');
+        const updatedAlbums = albums.filter((album) => album.id !== id);
+        fetchData();
+      } else {
+        console.log('Error:', response.status);
+        Alert.alert('', 'Failed to delete album');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('', 'An error occurred');
+    }
+  };
+  const onPressDelete = (id) => {
     Alert.alert('', 'Are you sure you want to delete this album?', [
-      {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},  
-      {text: 'OK', onPress: (id) => deleteAlbum(id)},
-   ],
-   { cancelable: false });
+      { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+      { text: 'OK', onPress: () => deleteAlbum(id) },
+    ], { cancelable: false });
   }
   
   return (  
