@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, Alert } from 'react-native';
+
+import CustomButton from '../components/CustomButton';
 
 const OneAlbum = ({ route }) => {
   const { albumId, albumImageSource } = route.params;
@@ -7,6 +9,7 @@ const OneAlbum = ({ route }) => {
   const [album, setAlbum] = useState([]);
   const [allArtists, setAllArtists] = useState([]);
   const [albumgenre, setAlbumGenre] = useState([]);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
     const albumApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readalbum/${albumId}`;
@@ -43,6 +46,11 @@ const OneAlbum = ({ route }) => {
 
   }, [albumId]);
 
+  const addToCart = () => {
+    setAddedToCart(true);
+    Alert.alert('Album added to Shopping Cart');
+  };
+
   return (
     <View style={styles.container}>
       {albumData ? (
@@ -60,9 +68,15 @@ const OneAlbum = ({ route }) => {
             : <Text>Condition: new </Text>}
             <Text>Stock: {albumData.stock}</Text>
             <Text>Price: {albumData.price} €</Text>
-            <Text></Text>
-          <Text> </Text>
-        </>
+      <View style={styles.addCart}>      
+      {addedToCart ? (
+        <CustomButton text="Added to Shopping Cart" />
+      ) : (
+        <CustomButton text="Add to Shopping Cart" onPress={addToCart} />
+      )}
+      </View>  
+      </>
+
       ) : (
         <Text>Loading...</Text>
       )}
@@ -112,6 +126,9 @@ const styles = StyleSheet.create({
   relatedTitle: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  addCart: {
+    marginTop: 10,
   },
 });
 
