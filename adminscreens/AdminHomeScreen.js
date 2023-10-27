@@ -9,7 +9,7 @@ import {
   Alert,
   TextInput,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Amplify, Auth } from 'aws-amplify';
 //import { withAuthenticator} from 'aws-amplify-react-native';
@@ -24,26 +24,35 @@ const AdminHomeScreen = () => {
   const [albums, setAlbums] = useState([]);
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
-
+  const setAlbumList=(list)=>{
+    setAlbums(list); 
+  }
   // data backendistä
-  useEffect(() => {
+  const fetchData = async () => {
+    try {
       const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readallalbums`;
 
-    fetch(albumsApiUrl)
-      .then((response) => response.json())
-      .then((responseData) => {
+      const response = await fetch(albumsApiUrl);
+      if (response.ok) {
+        const responseData = await response.json();
         setAlbums(responseData);
         setFilteredDataSource(responseData);
-      })
-      .catch((error) => {
-        console.error('Error fetching albums:', error);
-      });
-  }, []);
+      } else {
+        console.error('Error fetching albums:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching albums:', error);
+    }
+  };
+    useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
+  
   const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
     if (text) {
-      // Filter the "result" dataset based on the search text
       const newData = albums.filter((item) => {
         const itemData = (item.name + item.albumName + item.year + item.genre).toUpperCase();
         const textData = text.toUpperCase();
@@ -70,9 +79,6 @@ const AdminHomeScreen = () => {
     navigation.navigate('AdminAdd');
   };
 
-  const setAlbumList=(list)=>{
-    setAlbums(list); // en ole nyt ihan varma mikä funktio tähän tulee eli mitä datasettiä tässä lähdetään muokkaamaan...veikkaisin että tämä
-  }
 
   const deleteAlbum = async (id) => {
     await fetch("https://fishservice.appspot.com/rest/vinylstore/deletealbum"+id,{method:"DELETE"}) // tähän pitää päivittää oikea osoite
@@ -118,7 +124,7 @@ const AdminHomeScreen = () => {
           />
             <FlatList
               data={filteredDataSource.sort(function(a, b) {
-                return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+               return new Date(b.dateAdded) - new Date(a.dateAdded);;
                })} // Use the filtered data for rendering
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
@@ -128,10 +134,10 @@ const AdminHomeScreen = () => {
                     <Text>Artist name: {item.name}</Text>
                     <Text>Genre: {item.genre}</Text>
                     <Text>Year: {item.year}</Text>
-                    <Text>Date added: {item.dateAdded}</Text>
+                    {/* <Text>Date added: {item.dateAdded}</Text> */}
                     {item.cond === 0 
-                      ? <Text>Condition: used </Text> 
-                      : <Text>Condition: new </Text>}
+                      ? <Text>Condition: Used </Text> 
+                      : <Text>Condition: New </Text>}
                     <Text>Price: <Text style={{fontWeight:'bold'}} >{item.price} €</Text></Text>
                   </View>
                 </TouchableOpacity>
