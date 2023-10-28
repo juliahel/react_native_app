@@ -8,11 +8,15 @@ import albumImg3 from '../assets/images/album/album-img3.jpg';
 import albumImg4 from '../assets/images/album/album-img4.jpg';
 import albumImg5 from '../assets/images/album/album-img5.jpg';
 import Icon from 'react-native-vector-icons/Feather';
+import { RadioButton } from 'react-native-paper';
 
 const AlbumScreen = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [sortedData, setSortedData] = useState([]);
+  const [checked, setChecked] = React.useState('first');
+  const [radioData, setRadioData] = useState([]);
 
   useEffect(() => {
     const apiUrl = 'https://fishservice.appspot.com/rest/vinylstore/readallalbums';
@@ -25,6 +29,7 @@ const AlbumScreen = () => {
           imageIndex: index % 5,
         }));
         setData(albumImageIndex);
+        setSortedData(albumImageIndex);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -48,7 +53,44 @@ const AlbumScreen = () => {
         <Text style={{flex:5, fontSize:20, fontWeight:'bold', color:'#213555'}} >Albums</Text>
         <Icon name='sliders' size={25} color={'#213555'} style={{flex:1}} onPress={()=>setModalVisible(true)}/>
       </View>
-      
+      <View style={styles.title} >
+      <Text style={{padding:5, fontWeight:'bold'}} >All</Text>
+        <RadioButton 
+          style={{flex:1}} 
+          value="first"
+          status={ checked === 'first' ? 'checked' : 'unchecked' }
+          onPress={() => {
+            setChecked('first');
+            setData(sortedData);
+            setRadioData(sortedData);
+            }}/>
+      <Text style={{padding:5, fontWeight:'bold'}}>New</Text>
+        <RadioButton 
+        style={{flex:1}}
+        value="second"
+        status={ checked === 'second' ? 'checked' : 'unchecked' }
+        onPress={() => {
+          setChecked('second');
+          let tempList = sortedData.filter((item)=>
+                  item.cond===1
+                );
+                setData(tempList);
+                setRadioData(tempList);
+        }}/>
+        <Text style={{padding:5, fontWeight:'bold'}}>Used</Text>
+        <RadioButton 
+        style={{flex:1}} 
+        value="third"
+        status={ checked === 'third' ? 'checked' : 'unchecked' }
+        onPress={() => {
+          setChecked('third');
+          let tempList = sortedData.filter((item)=>
+                  item.cond===0
+                );
+                setData(tempList);
+                setRadioData(tempList);
+          }}/>
+      </View>
         <Modal 
         animationType="slide"
         visible={modalVisible}
@@ -56,17 +98,17 @@ const AlbumScreen = () => {
         >
           <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: 'rgba(0,0,0,.5)'}} >
             <View style={styles.modal}>
-              <TouchableOpacity style={styles.touchable} onPress={()=>{
-                let tempList = data.sort((a,b)=>
+              <TouchableOpacity style={styles.touchable} onPress={()=>{             
+                let tempList = radioData.sort((a,b)=>
                   a.albumName > b.albumName ? 1 : -1,
                 );
-                setData(tempList);
+                setSortedData(tempList);
                 setModalVisible(false);
               }} >
                 <Text style={styles.modaltext}>Sort by album name</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touchable} onPress={()=>{
-                let tempList = data.sort((a,b)=>
+              <TouchableOpacity style={styles.touchable} onPress={()=>{              
+                let tempList = radioData.sort((a,b)=>
                   a.name > b.name ? 1 : -1,
                 );
                 setData(tempList);
@@ -74,8 +116,8 @@ const AlbumScreen = () => {
               }} >
                 <Text style={styles.modaltext}>Sort by artist name</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touchable} onPress={()=>{
-                let tempList = data.sort((a,b)=>
+              <TouchableOpacity style={styles.touchable} onPress={()=>{             
+                let tempList = radioData.sort((a,b)=>
                   a.year > b.year ? 1 : -1,
                 );
                 setData(tempList);
@@ -83,8 +125,8 @@ const AlbumScreen = () => {
               }} >
                 <Text style={styles.modaltext}>Sort by year old to new</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touchable} onPress={()=>{
-                let tempList = data.sort((a,b)=>
+              <TouchableOpacity style={styles.touchable} onPress={()=>{             
+                let tempList = radioData.sort((a,b)=>
                   a.year < b.year ? 1 : -1,
                 );
                 setData(tempList);
@@ -92,8 +134,8 @@ const AlbumScreen = () => {
               }} >
                 <Text style={styles.modaltext}>Sort by year new to old</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.touchable} onPress={()=>{
-                let tempList = data.sort((a,b)=>
+              <TouchableOpacity style={styles.touchable} onPress={()=>{             
+                let tempList = radioData.sort((a,b)=>
                   a.price > b.price ? 1 : -1,
                 );
                 setData(tempList);
@@ -102,7 +144,7 @@ const AlbumScreen = () => {
                 <Text style={styles.modaltext}>Sort by price low to high</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.touchable} onPress={()=>{
-                let tempList = data.sort((a,b)=>
+                let tempList = radioData.sort((a,b)=>
                   a.price < b.price ? 1 : -1,
                 );
                 setData(tempList);
