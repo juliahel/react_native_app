@@ -8,6 +8,8 @@ import albumImg3 from '../assets/images/album/album-img3.jpg';
 import albumImg4 from '../assets/images/album/album-img4.jpg';
 import albumImg5 from '../assets/images/album/album-img5.jpg';
 
+import Icon from 'react-native-vector-icons/AntDesign';
+
 const SearchScreen = () => {
     const [data, setData] = useState([]);
     const navigation = useNavigation();
@@ -60,17 +62,31 @@ const SearchScreen = () => {
     const getAlbumImage = (imageIndex) => {
       return albumImages[imageIndex];
     };
+
   
     return (
       <View style={styles.container}>
         <Text style={{fontSize:20, alignSelf: 'center', fontWeight:'bold', color:'#213555', marginBottom:10}} >Search albums</Text>
-        <TextInput
-              style={styles.input}
-              onChangeText={(text) => searchFilterFunction(text)}
-              value={search}
-              underlineColorAndroid="transparent"
-              placeholder="Search Here"
-          />
+        <View style={styles.input} >
+          <TextInput
+                style={{width:'90%'}}
+                onChangeText={(text) => searchFilterFunction(text)}
+                value={search}
+                underlineColorAndroid="transparent"
+                placeholder="Search Here"
+                
+            />
+            { search ?
+              <View style={{width:'10%', paddingTop:10}} >
+                  <TouchableOpacity onPress={()=>{
+                    setSearch('');
+                    setFilteredDataSource(data);
+                  }}>
+                    <Icon name='close' size={25}  />
+                  </TouchableOpacity></View>
+                  : <View style={{width:'10%'}} ></View>
+                }
+        </View>
         <FlatList
           data={filteredDataSource.sort(function(a, b) {
             return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
@@ -132,6 +148,7 @@ const SearchScreen = () => {
         backgroundColor: '#FFFFFF',
       },
       input: {
+        flexDirection:'row',
         backgroundColor: 'white',
         width: '100%',
     

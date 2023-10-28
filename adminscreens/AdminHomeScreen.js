@@ -16,6 +16,7 @@ import { Amplify, Auth } from 'aws-amplify';
 //import config from '../aws-exports';
 import CustomButton from '../components/CustomButton';
 import SignInScreen from './SignInScreen';
+import IconSimple from 'react-native-vector-icons/AntDesign';
 
 //Amplify.configure(config);
 
@@ -123,13 +124,25 @@ const AdminHomeScreen = () => {
               You can search albums by name, artist, year, or genre. </Text>
           </View>   
           <View style={styles.container}>
+          <View style={styles.input}>
           <TextInput
-              style={styles.input}
+              style={{width:'90%'}}
               onChangeText={(text) => searchFilterFunction(text)}
               value={search}
               underlineColorAndroid="transparent"
               placeholder="Search Here"
           />
+          { search ?
+              <View style={{width:'10%', paddingTop:10}} >
+                  <TouchableOpacity onPress={()=>{
+                    setSearch('');
+                    setFilteredDataSource(albums);
+                  }}>
+                    <IconSimple name='close' size={25}  />
+                  </TouchableOpacity></View>
+                  : <View style={{width:'10%'}} ></View>
+                }
+          </View>
             <FlatList
               data={filteredDataSource.sort(function(a, b) {
                return new Date(b.dateAdded) - new Date(a.dateAdded);;
@@ -197,6 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   input: {
+    flexDirection:'row',
     backgroundColor: 'white',
     width: '100%',
 

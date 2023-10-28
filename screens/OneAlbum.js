@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Button, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, Alert, ScrollView } from 'react-native';
 
 import CustomButton from '../components/CustomButton';
 
@@ -52,6 +52,7 @@ const OneAlbum = ({ route }) => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       {albumData ? (
         <>
@@ -82,6 +83,7 @@ const OneAlbum = ({ route }) => {
       )}
 
     </View>
+    </ScrollView>
   );
 };
 
