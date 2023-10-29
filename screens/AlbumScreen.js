@@ -103,7 +103,7 @@ const AlbumScreen = () => {
                 let tempList = radioData.sort((a,b)=>
                   a.albumName > b.albumName ? 1 : -1,
                 );
-                setSortedData(tempList);
+                setData(tempList);
                 setModalVisible(false);
               }} >
                 <Text style={styles.modaltext}>Sort by album name</Text>
