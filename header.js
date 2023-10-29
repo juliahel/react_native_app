@@ -47,16 +47,28 @@ const Header = () => {
       </View>
       {isDrawerOpen && (
         <View style={styles.drawer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('Home');
+            setIsDrawerOpen(false);
+            }}>
             <Text style={styles.drawerItem}>Home</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Artists')}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('Artists');
+            setIsDrawerOpen(false);
+            }}>
             <Text style={styles.drawerItem}>Artists</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Albums')}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('Albums');
+            setIsDrawerOpen(false);
+            }}>
             <Text style={styles.drawerItem}>Albums</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Contact')}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('Contact');
+            setIsDrawerOpen(false);
+            }}>
             <Text style={styles.drawerItem}>Contact</Text>
           </TouchableOpacity>
         </View>
