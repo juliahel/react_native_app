@@ -30,6 +30,7 @@ const AlbumScreen = () => {
         }));
         setData(albumImageIndex);
         setSortedData(albumImageIndex);
+        setRadioData(albumImageIndex);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
