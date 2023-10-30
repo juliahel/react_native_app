@@ -23,6 +23,7 @@ import ConfirmEmailScreen from './adminscreens/ConfirmEmailScreen';
 import ForgotPasswordScreen from './adminscreens/ForgotPasswordScreen';
 import NewPasswordScreen from './adminscreens/NewPasswordScreen';
 import AddDataScreen from './adminscreens/AddDataScreen';
+import EditDataScreen from './adminscreens/EditDataScreen';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +72,7 @@ const AppNavigator = () => {
           <>
           <Stack.Screen name="AdminHome" options={{headerShown: false}} component={AdminHomeScreen} />
           <Stack.Screen name="AdminAdd" options={{headerShown: false}} component={AddDataScreen} />
+          <Stack.Screen name="EditData" options={{headerShown: false}} component={EditDataScreen} />
           </>
         ) : (
           <>
