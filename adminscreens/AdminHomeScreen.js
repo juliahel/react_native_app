@@ -9,7 +9,7 @@ import {
   Alert,
   TextInput,
 } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Amplify, Auth } from 'aws-amplify';
 //import { withAuthenticator} from 'aws-amplify-react-native';
@@ -28,6 +28,7 @@ const AdminHomeScreen = () => {
   const setAlbumList=(list)=>{
     setAlbums(list); 
   }
+
   // data backendistä
   const fetchData = async () => {
     try {
@@ -106,6 +107,10 @@ const AdminHomeScreen = () => {
       { text: 'OK', onPress: () => deleteAlbum(id) },
     ], { cancelable: false });
   }
+
+  const onAlbumClick = (id) =>{
+    navigation.navigate('EditData', { id: id });
+  }
   
   return (  
         <View style={styles.container}>
@@ -149,7 +154,7 @@ const AdminHomeScreen = () => {
                })} // Use the filtered data for rendering
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity onLongPress={() => {onPressDelete(item.id)}}>
+                <TouchableOpacity onLongPress={() => {onPressDelete(item.id)}} onPress={() => {onAlbumClick(item.id)}}>
                     <View style={styles.item}>
                     <Text style={{fontWeight:'bold'}} >{item.albumName}</Text>
                     <Text>Artist name: {item.name}</Text>
