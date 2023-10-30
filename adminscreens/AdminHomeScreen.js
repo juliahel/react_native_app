@@ -62,11 +62,10 @@ const AdminHomeScreen = () => {
       });
       setFilteredDataSource(newData);
     } else {
-      // If search text is empty, show all albums
       setFilteredDataSource(albums);
     }
 
-    setSearch(text); // Update the search query in state
+    setSearch(text);
   };
 
   const signOut = async () => {
@@ -190,7 +189,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  //tää on kesken
   item: {
     backgroundColor: 'white',
     padding: 16,

@@ -20,7 +20,6 @@ const EditDataScreen = () => {
     const [price, setPrice]=useState();
     const [stock, setStock]=useState();
  
-
     useEffect(() => {
     
         const fetchAlbumDetails = async () => {
