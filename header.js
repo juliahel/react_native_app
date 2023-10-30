@@ -54,16 +54,16 @@ const Header = () => {
             <Text style={styles.drawerItem}>Home</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Artists');
-            setIsDrawerOpen(false);
-            }}>
-            <Text style={styles.drawerItem}>Artists</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
             navigation.navigate('Albums');
             setIsDrawerOpen(false);
             }}>
             <Text style={styles.drawerItem}>Albums</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('Artists');
+            setIsDrawerOpen(false);
+            }}>
+            <Text style={styles.drawerItem}>Artists</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
             navigation.navigate('Contact');
