@@ -44,7 +44,7 @@ const ArtistScreen = () => {
       <Text style={{fontSize:20, alignSelf: 'center', fontWeight:'bold', color:'#213555', marginBottom:10}} >Artists</Text>
       <FlatList
         data={data.sort(function(a, b) {
-          return (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0;
+          return (a.name.toUpperCase() < b.name.toUpperCase()) ? -1 : (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : 0;
          })}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
