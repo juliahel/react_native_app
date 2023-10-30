@@ -14,7 +14,7 @@ const AlbumScreen = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [sortedData, setSortedData] = useState([]);
+  const [unsortedData, setUnsortedData] = useState([]);
   const [checked, setChecked] = React.useState('first');
   const [radioData, setRadioData] = useState([]);
 
@@ -29,7 +29,7 @@ const AlbumScreen = () => {
           imageIndex: index % 5,
         }));
         setData(albumImageIndex);
-        setSortedData(albumImageIndex);
+        setUnsortedData(albumImageIndex);
         setRadioData(albumImageIndex);
       })
       .catch((error) => {
@@ -55,37 +55,40 @@ const AlbumScreen = () => {
         <Icon name='sliders' size={25} color={'#213555'} style={{flex:1}} onPress={()=>setModalVisible(true)}/>
       </View>
       <View style={styles.title} >
-      <Text style={{padding:5, fontWeight:'bold'}} >All</Text>
+      <Text style={{padding:5, fontWeight:'bold', color:'#213555'}} >All</Text>
         <RadioButton 
           style={{flex:1}} 
+          color='#213555'
           value="first"
           status={ checked === 'first' ? 'checked' : 'unchecked' }
           onPress={() => {
             setChecked('first');
-            setData(sortedData);
-            setRadioData(sortedData);
+            setData(unsortedData);
+            setRadioData(unsortedData);
             }}/>
-      <Text style={{padding:5, fontWeight:'bold'}}>New</Text>
+      <Text style={{padding:5, fontWeight:'bold', color:'#213555'}}>New</Text>
         <RadioButton 
         style={{flex:1}}
+        color='#213555'
         value="second"
         status={ checked === 'second' ? 'checked' : 'unchecked' }
         onPress={() => {
           setChecked('second');
-          let tempList = sortedData.filter((item)=>
+          let tempList = unsortedData.filter((item)=>
                   item.cond===1
                 );
                 setData(tempList);
                 setRadioData(tempList);
         }}/>
-        <Text style={{padding:5, fontWeight:'bold'}}>Used</Text>
+        <Text style={{padding:5, fontWeight:'bold', color:'#213555'}}>Used</Text>
         <RadioButton 
-        style={{flex:1}} 
+        style={{flex:1}}
+        color='#213555' 
         value="third"
         status={ checked === 'third' ? 'checked' : 'unchecked' }
         onPress={() => {
           setChecked('third');
-          let tempList = sortedData.filter((item)=>
+          let tempList = unsortedData.filter((item)=>
                   item.cond===0
                 );
                 setData(tempList);
