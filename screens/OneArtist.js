@@ -21,7 +21,7 @@ const OneArtist = ({ route }) => {
 
   useEffect(() => {
     const artistApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readartist/${artistId}`;
-    const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readalbumdata`;
+    const albumsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readallalbums`;
     const allArtistsApiUrl = `https://fishservice.appspot.com/rest/vinylstore/readdata`;
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
