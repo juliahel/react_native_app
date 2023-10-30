@@ -27,7 +27,7 @@ const HomeScreen = () => {
       .then((response) => response.json())
       .then((responseData) => {
         // sort the albums by dateAdded
-        responseData.sort((a, b) => b.dateAdded - a.dateAdded);
+        responseData.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
         // filter first two new and used albums
         const latestNewAlbumsData = responseData.filter(item => item.cond === 1).slice(0, 4);
         const latestUsedAlbumsData = responseData.filter(item => item.cond === 0).slice(0, 4);

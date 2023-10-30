@@ -66,18 +66,22 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     height: 40,
+    backgroundColor: 'white',
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 10,
     paddingLeft: 10,
+    borderRadius: 5,
   },
   largeInput: {
     width: '100%',
     height: 120,
+    backgroundColor: 'white',
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 20,
     paddingLeft: 10,
+    borderRadius: 5,
   },
 });
 

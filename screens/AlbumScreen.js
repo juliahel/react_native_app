@@ -104,7 +104,7 @@ const AlbumScreen = () => {
             <View style={styles.modal}>
               <TouchableOpacity style={styles.touchable} onPress={()=>{             
                 let tempList = radioData.sort((a,b)=>
-                  a.albumName > b.albumName ? 1 : -1,
+                  a.albumName.toUpperCase() > b.albumName.toUpperCase() ? 1 : -1,
                 );
                 setData(tempList);
                 setModalVisible(false);
@@ -113,7 +113,7 @@ const AlbumScreen = () => {
               </TouchableOpacity>
               <TouchableOpacity style={styles.touchable} onPress={()=>{              
                 let tempList = radioData.sort((a,b)=>
-                  a.name > b.name ? 1 : -1,
+                  a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1,
                 );
                 setData(tempList);
                 setModalVisible(false);
